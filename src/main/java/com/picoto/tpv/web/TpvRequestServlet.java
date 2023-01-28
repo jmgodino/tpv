@@ -14,7 +14,7 @@ import com.picoto.tpv.dto.ext.DatosPagoTpvRedsys;
 import com.picoto.tpv.service.ext.PostTpvRedsysImpl;
 import com.picoto.tpv.util.Utils;
 
-// http://localhost:8080/tpv/TpvPago
+// http://localhost:8080/tpv/TpvInicio
 @WebServlet("/TpvInicio")
 public class TpvRequestServlet extends HttpServlet {
 
@@ -42,13 +42,15 @@ public class TpvRequestServlet extends HttpServlet {
 			String pagorest = req.getParameter("pagorest");
 			
 			// Faltaría validar si los parametros obligatorios llegan y la calidad de los mismos
+
+			DatosPagoTpvRedsys dp = new DatosPagoTpvRedsys(modelo, ejercicio, periodo, nif, importe, idioma, pagodirecto, mediopago, pagoinseguro, ip);
+			req.setAttribute("datosPago",dp);
 			
 			if (!Utils.opcionActivada(pagorest)) {
 				Utils.debug("Invoca a: /paginas/detallesPagoTpv.jsp");
 				req.getRequestDispatcher("/paginas/detallesPagoTpv.jsp").forward(req, resp);
 			} else {
 				PostTpvRedsysImpl client = new PostTpvRedsysImpl();
-				DatosPagoTpvRedsys dp = new DatosPagoTpvRedsys(modelo, ejercicio, periodo, nif, importe, idioma, pagodirecto, mediopago, pagoinseguro, ip);
 				dp.setOperacion(operacion);
 				dp.setRedireccion(false);
 				

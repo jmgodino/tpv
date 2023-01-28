@@ -12,10 +12,10 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import com.picoto.tpv.dto.ext.DatosPagoTpvRedsys;
+import com.picoto.tpv.exceptions.TPVException;
 import com.picoto.tpv.service.ext.RedirectTpvRedsysImpl;
 import com.picoto.tpv.util.Utils;
 
-// http://localhost:8080/tpv/TpvPago usar tarjeta:
 @WebServlet("/TpvDetalle")
 public class TpvPrepareServlet extends HttpServlet {
 
@@ -40,18 +40,25 @@ public class TpvPrepareServlet extends HttpServlet {
 			String mediopago = root.getString("mediopago");
 			String pagodirecto = root.getString("pagodirecto");
 			String pagoinseguro = root.getString("pagoinseguro");
+			String hash = root.getString("hash");
 
 			RedirectTpvRedsysImpl client = new RedirectTpvRedsysImpl();
 			DatosPagoTpvRedsys dp = new DatosPagoTpvRedsys(modelo, ejercicio, periodo, nif, importe, idioma,
 					pagodirecto, mediopago, pagoinseguro, ip);
 			dp.setOperacion(operacion);
 			dp.setRedireccion(true);
+			
+			if (!dp.hashValido(hash)) {
+				throw new TPVException("Error de seguridad. Datos modificados");
+			}
+			
 			client.procesarPeticionTPV(dp);
 			
 			JSONObject salida = new JSONObject();
 			salida.put("version", client.getVersion());
 			salida.put("parametros", client.getPayload());
 			salida.put("firma", client.getSignature());
+			salida.put("error", "");
 			
 			resp.setContentType("application/json");
 			resp.getWriter().println(salida.toString());
@@ -59,7 +66,17 @@ public class TpvPrepareServlet extends HttpServlet {
 			
 
 		} catch (Exception e) {
-			req.getRequestDispatcher("/paginas/error.jsp").forward(req, resp);
+			JSONObject salida = new JSONObject();
+			salida.put("version", "");
+			salida.put("parametros", "");
+			salida.put("firma", "");
+			salida.put("error", e.getMessage());
+			
+			resp.setStatus(500);
+			resp.setContentType("application/json");
+			resp.getWriter().println(salida.toString());
+			resp.getWriter().close();
+
 		}
 	}
 

@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.picoto.tpv.dao.TokenDao;
 import com.picoto.tpv.dto.DatosPagoTpvIntf;
 import com.picoto.tpv.dto.DatosTarjeta;
@@ -21,8 +24,14 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	public static final String OPERACION_TARJETA = "C";
 	public static final String OPERACION_BIZUM = "z";
 
+	public static final BigDecimal LIMITE_CENTIMOS = new BigDecimal("500");
+	public static final BigDecimal CIEN = new BigDecimal("100");
+	public static final BigDecimal UNIDAD = new BigDecimal("1");
+
+	
 	private String nrc;
 	private String importeCentimos;
+	private BigDecimal importeIngresar;
 	private boolean pagoDirecto;
 	private String concepto;
 	private String titular;
@@ -37,6 +46,8 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	private boolean redireccion;
 
 	private DatosTarjeta datosTarjeta;
+
+	private String hash;
 
 	public DatosPagoTpvRedsys() {
 	}
@@ -64,21 +75,20 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 		String valorRnd = "" + (new Random().nextInt(10000000) + 100000000);
 		nrc = "1001234567890" + valorRnd;
 
+		calcularHash(modelo, ejercicio, periodo, nif, importe);
 	}
 
 	private void calcularImporteCentimosTpv(String importe) {
 		// ImporteTPV = 100 * (Resultado/ (1 - TasaDescuento))
 
-		BigDecimal cien = new BigDecimal("100");
-		BigDecimal unidad = new BigDecimal("1");
 		BigDecimal importeComision = new BigDecimal(TASA_DESCUENTO);
-		BigDecimal divisor = unidad.subtract(importeComision);
+		BigDecimal divisor = UNIDAD.subtract(importeComision);
 
 		BigDecimal dividendo = new BigDecimal(importe);
 
-		BigDecimal importeIngresar = dividendo.divide(divisor, 2, RoundingMode.CEILING);
+		importeIngresar = dividendo.divide(divisor, 2, RoundingMode.CEILING);
 
-		importeCentimos = "" + importeIngresar.multiply(cien).setScale(0, RoundingMode.CEILING);
+		importeCentimos = "" + importeIngresar.multiply(CIEN).setScale(0, RoundingMode.CEILING);
 	}
 
 	private boolean esAfirmativo(String str) {
@@ -93,6 +103,11 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	@Override
 	public String getImporteCentimos() {
 		return importeCentimos;
+	}
+	
+	@Override
+	public BigDecimal getImporteIngresar() {
+		return importeIngresar;
 	}
 
 	@Override
@@ -208,7 +223,26 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 				+ "]";
 	}
 
+	@Override
+	public String getHash() {
+		return hash;
+	}
 
+	private void calcularHash(String modelo, String ejercicio, String periodo, String nif, String importe) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(modelo).append(ejercicio).append(periodo).append(nif).append(importe).append(Utils.getDia());
+		
+		hash = new Base64().encodeAsString(DigestUtils.sha256(sb.toString().getBytes()));
+	}
 
+	@Override
+	public boolean hashValido(String hashParam) {
+		return !Utils.esVacio(hashParam) && hashParam.equals(hash);
+	}
+
+	@Override
+	public boolean noSuperaLimiteMinimo() {
+		return new BigDecimal(importeCentimos).compareTo(LIMITE_CENTIMOS) < 0;
+	}
 	
 }

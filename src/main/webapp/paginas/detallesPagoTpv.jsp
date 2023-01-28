@@ -1,4 +1,7 @@
-<%@page language="java" %>
+<%@page language="java" contentType="text/html; charset=UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="es"/>
 
 <html>
 <head>
@@ -13,6 +16,7 @@ li {
 
 .rojo {
 	color: red;
+	font-size: 10px;
 }
 
 .textoTarjetas {
@@ -26,13 +30,19 @@ li {
 
 function aceptaCondiciones(checkBoxField) {
   if (checkBoxField.checked) {
-  	cargarDatosPagoTpv();
+  	checkBoxField.disabled = true;
+  	if (esVacio("#versionTpv") || esVacio("#parametrosTpv") || esVacio("#firmaTpv")) { 
+  		cargarDatosPagoTpv();
   	}
-  toggle("formularioPago");
+  }
+}
+
+function esVacio() {
+	return !$("#versionTpv").val();
 }
 
 function cargarDatosPagoTpv() {
-	var info = { "modelo":"${param.modelo}", "ejercicio":"${param.ejercicio}", "periodo":"${param.periodo}", "nif":"${param.nif}", "importe":"${param.importe}", "idioma":"${param.idioma}", "mediopago":"${param.mediopago}", "pagoinseguro":"${param.pagoinseguro}", "pagodirecto":"${param.pagodirecto}", "operacion":"${param.operacion}" };
+	var info = { "modelo":"${param.modelo}", "ejercicio":"${param.ejercicio}", "periodo":"${param.periodo}", "nif":"${param.nif}", "importe":"${param.importe}", "idioma":"${param.idioma}", "mediopago":"${param.mediopago}", "pagoinseguro":"${param.pagoinseguro}", "pagodirecto":"${param.pagodirecto}", "operacion":"${param.operacion}", "hash":"${datosPago.hash}" };
 
         $.ajax({
             type: 'post',
@@ -45,7 +55,13 @@ function cargarDatosPagoTpv() {
              	$("#versionTpv").val(data.version);
              	$("#parametrosTpv").val(data.parametros);
              	$("#firmaTpv").val(data.firma);
-            }
+           	  	toggle("formularioPago");
+            },
+			statusCode: {
+        		500: function() {
+          			alert( 'Error al preparar llamada al TPV' );
+        		}
+			}
         });
 }
 
@@ -65,17 +81,17 @@ function toggle(nombre) {
 <li>
 	<h1>Va a realizar un pago con los siguientes datos mediante un TPV ajeno a esta Sede Electr&oacute;nica</h1>
 </li>
-		<li><label for="modelo">Modelo: </label>${param.modelo}</li>
-		<li><label for="ejercicio">Ejercicio: </label>${param.ejercicio}</li>
-		<li><label for="periodo">Periodo: </label>${param.periodo}</li>
-		<li><label for="nif">NIF: </label>${param.nif}</li>
-		<li><label for="importe">Importe en euros: </label>${param.importe}</li>
-		<li><label for="importe">Importe a pagar en TPV (en centimos de euro): </label>${datosPago.importeCentimos}</li>
+		<li>Modelo: ${param.modelo}</li>
+		<li>Ejercicio: ${param.ejercicio}</li>
+		<li>Periodo: ${param.periodo}</li>
+		<li>NIF: ${param.nif}</li>
+		<li>Importe en comercio: <fmt:formatNumber type="number" pattern="0.00" value="${param.importe}"/>€</li>
+		<li>Importe a pagar en TPV: <fmt:formatNumber type="number" pattern="0.00" value="${datosPago.importeIngresar}"/>€</li>
 <li>
-	<h2 class="rojo">Recuerde que esta forma de pago puede suponer el pago de una tasa de descuento ajena a este establecimiento del 0,31%</h2>
+&nbsp;
 </li>
 <li>
-	<input type="checkbox" id="condiciones" name="condiciones" onChange="aceptaCondiciones(this)"> Acepta las condiciones del servicio
+	<input type="checkbox" id="condiciones" name="condiciones" onChange="aceptaCondiciones(this)"> Acepta las condiciones del servicio incluido un recargo del 0,31% ajeno al comercio
 </li>
 <li>
 &nbsp;

@@ -124,7 +124,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 			apiMacSha256.setParameter("DS_MERCHANT_EMV3DS",datosSeguridad);
 			
 			// Forzamos no uso de EMV3DS si el importe es bajo.
-			if (noSuperaLimiteMinimo(datosPago.getImporteCentimos())) {
+			if (datosPago.noSuperaLimiteMinimo()) {
 				apiMacSha256.setParameter("DS_MERCHANT_EXCEP_SCA", "LWV");
 			}
 		}
@@ -145,10 +145,6 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 		}
 
-	}
-
-	private boolean noSuperaLimiteMinimo(String importeCentimos) {
-		return new BigDecimal(importeCentimos).compareTo(new BigDecimal("100")) < 0;
 	}
 
 	private String getDatoSeguridad() throws TPVException {

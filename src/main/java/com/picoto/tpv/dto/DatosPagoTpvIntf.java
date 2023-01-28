@@ -1,10 +1,14 @@
 package com.picoto.tpv.dto;
 
+import java.math.BigDecimal;
+
 public interface DatosPagoTpvIntf {
 
 	public String getNrc();
 
 	public String getImporteCentimos();
+	
+	public BigDecimal getImporteIngresar();
 
 	public boolean isPagoDirecto();
 
@@ -36,6 +40,12 @@ public interface DatosPagoTpvIntf {
 
 	public boolean isRedireccion();
 
-	DatosTarjeta getDatosTarjeta();
+	public DatosTarjeta getDatosTarjeta();
+
+	public String getHash();
+
+	public boolean hashValido(String hash);
+
+	public boolean noSuperaLimiteMinimo();
 	
 }

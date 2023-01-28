@@ -1,5 +1,9 @@
 package com.picoto.tpv.util;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class Utils {
 	
 	public static boolean esVacio(String str) {
@@ -14,5 +18,12 @@ public class Utils {
 
 	public static boolean opcionActivada(String op) {
 		return !esVacio(op) && "S".equalsIgnoreCase(op);
+	}
+
+
+	public static int getDia() {
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(new Date()); 
+		return cal.get(Calendar.DAY_OF_YEAR);
 	}
 }
