@@ -1,0 +1,70 @@
+2023-01-22 11:09:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TPV_TOKENS" ya existe
+Table "TPV_TOKENS" already exists; SQL statement:
+create table tpv_tokens (nif varchar(9) primary key, token varchar(200), fecha date) [42101-214]
+2023-01-22 15:05:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor Invalido "2" para el parametro "parameterIndex"
+Invalid value "2" for parameter "parameterIndex" [90008-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:646)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.getInvalidValueException(DbException.java:298)
+	at org.h2.jdbc.JdbcPreparedStatement.setParameter(JdbcPreparedStatement.java:1395)
+	at org.h2.jdbc.JdbcPreparedStatement.setDate(JdbcPreparedStatement.java:422)
+	at com.picoto.tpv.TokenDao.getToken(TokenDao.java:76)
+	at com.picoto.tpv.DatosPagoTpv.recuperaToken(DatosPagoTpv.java:105)
+	at com.picoto.tpv.DatosPagoTpv.<init>(DatosPagoTpv.java:41)
+	at com.picoto.tpv.TpvRequestServlet.doPost(TpvRequestServlet.java:38)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:647)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:100)
+	at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:953)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)
+	at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1041)
+	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:603)
+	at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:312)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2023-01-22 15:05:43 database: close
+org.h2.message.DbException: IO Exception: "Closing"
+IO Exception: "Closing" [90028-214]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.close(Store.java:402)
+	at org.h2.engine.Database.closeOpenFilesAndUnlock(Database.java:1261)
+	at org.h2.engine.Database.closeImpl(Database.java:1225)
+	at org.h2.engine.Database.close(Database.java:1144)
+	at org.h2.engine.OnExitDatabaseCloser.onShutdown(OnExitDatabaseCloser.java:85)
+	at org.h2.engine.OnExitDatabaseCloser.run(OnExitDatabaseCloser.java:114)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: IO Exception: "Closing"
+IO Exception: "Closing" [90028-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	... 7 more
+Caused by: org.h2.mvstore.MVStoreException: java.lang.NoClassDefFoundError: org/h2/mvstore/Chunk$PositionComparator [2.1.214/3]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:1004)
+	at org.h2.mvstore.MVStore.compactMoveChunks(MVStore.java:2052)
+	at org.h2.mvstore.MVStore.compactFile(MVStore.java:2282)
+	at org.h2.mvstore.MVStore.closeStore(MVStore.java:1329)
+	at org.h2.mvstore.MVStore.close(MVStore.java:1291)
+	at org.h2.mvstore.db.Store.close(Store.java:386)
+	... 5 more
+Caused by: java.lang.NoClassDefFoundError: org/h2/mvstore/Chunk$PositionComparator
+	at org.h2.mvstore.MVStore.findChunksToMove(MVStore.java:2103)
+	at org.h2.mvstore.MVStore.compactMoveChunks(MVStore.java:2064)
+	at org.h2.mvstore.MVStore.compactMoveChunks(MVStore.java:2041)
+	... 9 more
+Caused by: java.lang.ClassNotFoundException: org.h2.mvstore.Chunk$PositionComparator
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1702)
+	at org.apache.catalina.loader.WebappClassLoader.loadClass(WebappClassLoader.java:1547)
+	... 12 more

@@ -1,0 +1,11 @@
+{
+"shipAddrCountry": "%3d",
+"shipAddrCity": "%s",
+"shipAddrState": "%2s",
+"shipAddrLine1": "%s",
+"shipAddrLine2": "%s",
+"shipAddrPostCode": "%s",
+"cardholderName": "%s",
+"email": "%s",
+"mobilePhone": {"cc": "%3d","subscriber": "%d"}
+}
