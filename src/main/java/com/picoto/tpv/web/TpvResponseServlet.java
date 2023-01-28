@@ -12,7 +12,7 @@ import com.picoto.tpv.dto.DetallesPagoIntf;
 import com.picoto.tpv.service.ext.RedirectTpvRedsysImpl;
 import com.picoto.tpv.service.intf.RedirectTpvIntf;
 
-@WebServlet(name="TpvResponseServlet", urlPatterns = "/TpvRetorno")
+@WebServlet("/TpvRetorno")
 public class TpvResponseServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -6186219472085351504L;

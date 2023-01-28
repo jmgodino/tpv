@@ -26,7 +26,7 @@ import sis.redsys.api.ApiMacSha256;
 
 public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
-	protected static final String COMERCIO_NOMBRE = "AEAT";
+	protected static final String COMERCIO_NOMBRE = "Comercio";
 
 	protected static final String DOMINIO_URL_RETORNO = "http://localhost:8080";
 
@@ -34,7 +34,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 	protected static final String URL_RETORNO_PAGO_OK = "/tpv/TpvRetorno";
 
-	protected static final String TERMINAL_AEAT = "048";
+	protected static final String TERMINAL_COMERCIO = "048";
 
 	protected static final String MONEDA_EURO = "978";
 
@@ -80,7 +80,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		apiMacSha256.setParameter("DS_MERCHANT_CURRENCY", MONEDA_EURO);
 		apiMacSha256.setParameter("DS_MERCHANT_TRANSACTIONTYPE", datosPago.getOperacion());
 
-		apiMacSha256.setParameter("DS_MERCHANT_TERMINAL", TERMINAL_AEAT);
+		apiMacSha256.setParameter("DS_MERCHANT_TERMINAL", TERMINAL_COMERCIO);
 
 		apiMacSha256.setParameter("DS_MERCHANT_PAYMETHODS", datosPago.getMediopago());
 

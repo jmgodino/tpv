@@ -52,7 +52,7 @@ function cambioPagoRest() {
 	<h1>Datos del pago</h1>
 </li>
 <li>
-	<form name="formu" action="/tpv/TpvPago" method="POST">
+	<form name="formu" action="/tpv/TpvInicio" method="POST">
 		<ul class="no-bullets">
 		
 		<li><h2>Datos de la autoliquidaci&oacute;n</h2></li>
@@ -72,7 +72,7 @@ function cambioPagoRest() {
 		<li><label for="mediopago">Medio de Pago:</label><select name="mediopago" onChange="cambioMedioPago(this)"><option value="C">Tarjeta</option><option value="z">Bizum</option></select></li>
 		<li id="listaOperacion"><label for="operacion">Operacion:</label><select name="operacion"><option value="0">Autorizacion</option><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_PREAUTORIZACION%>">Preautorizacion</option></select></li>
 
-		<li id="listaPagoSeguro"><label for="pagoseguro">Admitir Pago No Seguro:</label>
+		<li id="listaPagoSeguro"><label for="pagoinseguro">Admitir Pago No Seguro:</label>
 		<input type="radio" name="pagoinseguro" value="S">Si</input>
 		<input type="radio" name="pagoinseguro" value="N" checked>No</input>
 		<span class="textoAyuda">Esta opci&oacute;n le permitir&aacute; realizar pagos usando tan solo datos de su tarjeta, sin necesidad de datos adicionales</span>

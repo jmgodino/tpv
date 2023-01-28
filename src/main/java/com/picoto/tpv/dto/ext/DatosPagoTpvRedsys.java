@@ -46,7 +46,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 
 		calcularImporteCentimosTpv(importe);
 
-		concepto = String.format("PAGO DE IMPUESTOS AEAT. AUTOLIQUIDACION MODELO %s EJERCICIO %s PERIODO %s", modelo,
+		concepto = String.format("PAGO DE IMPUESTOS. AUTOLIQUIDACION MODELO %s EJERCICIO %s PERIODO %s", modelo,
 				ejercicio, periodo);
 		titular = nif;
 		this.idioma = idioma;
@@ -67,7 +67,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	}
 
 	private void calcularImporteCentimosTpv(String importe) {
-		// ImporteTPV = 100 * (ImporteAEAT / (1 - TasaDescuento))
+		// ImporteTPV = 100 * (Resultado/ (1 - TasaDescuento))
 
 		BigDecimal cien = new BigDecimal("100");
 		BigDecimal unidad = new BigDecimal("1");

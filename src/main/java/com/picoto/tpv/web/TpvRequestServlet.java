@@ -12,11 +12,10 @@ import com.picoto.tpv.dto.DatosTarjeta;
 import com.picoto.tpv.dto.DetallesPagoIntf;
 import com.picoto.tpv.dto.ext.DatosPagoTpvRedsys;
 import com.picoto.tpv.service.ext.PostTpvRedsysImpl;
-import com.picoto.tpv.service.ext.RedirectTpvRedsysImpl;
 import com.picoto.tpv.util.Utils;
 
-// http://localhost:8080/tpv/TpvPago usar tarjeta:
-@WebServlet(name="TpvRequestServlet", urlPatterns = "/TpvPago")
+// http://localhost:8080/tpv/TpvPago
+@WebServlet("/TpvInicio")
 public class TpvRequestServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -6186219472085351504L;
@@ -45,16 +44,8 @@ public class TpvRequestServlet extends HttpServlet {
 			// Faltaría validar si los parametros obligatorios llegan y la calidad de los mismos
 			
 			if (!Utils.opcionActivada(pagorest)) {
-				RedirectTpvRedsysImpl client = new RedirectTpvRedsysImpl();
-				DatosPagoTpvRedsys dp = new DatosPagoTpvRedsys(modelo, ejercicio, periodo, nif, importe, idioma, pagodirecto, mediopago, pagoinseguro, ip);
-				dp.setOperacion(operacion);
-				dp.setRedireccion(true);
-				client.procesarPeticionTPV(dp);
-				req.setAttribute("datosPago", dp);
-				req.setAttribute("version", client.getVersion());
-				req.setAttribute("parametros", client.getPayload());
-				req.setAttribute("firma", client.getSignature());
-				req.getRequestDispatcher("/paginas/formularioPeticionTpv.jsp").forward(req, resp);
+				Utils.debug("Invoca a: /paginas/detallesPagoTpv.jsp");
+				req.getRequestDispatcher("/paginas/detallesPagoTpv.jsp").forward(req, resp);
 			} else {
 				PostTpvRedsysImpl client = new PostTpvRedsysImpl();
 				DatosPagoTpvRedsys dp = new DatosPagoTpvRedsys(modelo, ejercicio, periodo, nif, importe, idioma, pagodirecto, mediopago, pagoinseguro, ip);
@@ -65,6 +56,7 @@ public class TpvRequestServlet extends HttpServlet {
 				String caducidad = req.getParameter("cad");
 				String cvv = req.getParameter("cvv");
 				dp.setDatosTarjeta(new DatosTarjeta(pan, caducidad, cvv));
+				
 				client.open();
 				DetallesPagoIntf detallesPago = client.post(dp);
 				client.close();
