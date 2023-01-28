@@ -8,8 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.picoto.tpv.dto.DatosTarjeta;
+import com.picoto.tpv.dto.DetallesPagoIntf;
 import com.picoto.tpv.dto.ext.DatosPagoTpvRedsys;
+import com.picoto.tpv.service.ext.PostTpvRedsysImpl;
 import com.picoto.tpv.service.ext.RedirectTpvRedsysImpl;
+import com.picoto.tpv.util.Utils;
 
 // http://localhost:8080/tpv/TpvPago usar tarjeta:
 @WebServlet(name="TpvRequestServlet", urlPatterns = "/TpvPago")
@@ -25,7 +29,6 @@ public class TpvRequestServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			RedirectTpvRedsysImpl client = new RedirectTpvRedsysImpl();
 			String modelo = req.getParameter("modelo");
 			String ejercicio = req.getParameter("ejercicio");
 			String periodo = req.getParameter("periodo");
@@ -37,18 +40,42 @@ public class TpvRequestServlet extends HttpServlet {
 			String mediopago = req.getParameter("mediopago");
 			String pagodirecto = req.getParameter("pagodirecto");
 			String pagoinseguro = req.getParameter("pagoinseguro");
+			String pagorest = req.getParameter("pagorest");
 			
 			// Faltaría validar si los parametros obligatorios llegan y la calidad de los mismos
 			
-			DatosPagoTpvRedsys dp = new DatosPagoTpvRedsys(modelo, ejercicio, periodo, nif, importe, idioma, pagodirecto, mediopago, pagoinseguro, ip);
-			dp.setOperacion(operacion);
-			dp.setRedireccion(true);
-			client.procesarPeticionTPV(dp);
-			req.setAttribute("datosPago", dp);
-			req.setAttribute("version", client.getVersion());
-			req.setAttribute("parametros", client.getPayload());
-			req.setAttribute("firma", client.getSignature());
-			req.getRequestDispatcher("/paginas/formularioPeticionTpv.jsp").forward(req, resp);
+			if (!Utils.opcionActivada(pagorest)) {
+				RedirectTpvRedsysImpl client = new RedirectTpvRedsysImpl();
+				DatosPagoTpvRedsys dp = new DatosPagoTpvRedsys(modelo, ejercicio, periodo, nif, importe, idioma, pagodirecto, mediopago, pagoinseguro, ip);
+				dp.setOperacion(operacion);
+				dp.setRedireccion(true);
+				client.procesarPeticionTPV(dp);
+				req.setAttribute("datosPago", dp);
+				req.setAttribute("version", client.getVersion());
+				req.setAttribute("parametros", client.getPayload());
+				req.setAttribute("firma", client.getSignature());
+				req.getRequestDispatcher("/paginas/formularioPeticionTpv.jsp").forward(req, resp);
+			} else {
+				PostTpvRedsysImpl client = new PostTpvRedsysImpl();
+				DatosPagoTpvRedsys dp = new DatosPagoTpvRedsys(modelo, ejercicio, periodo, nif, importe, idioma, pagodirecto, mediopago, pagoinseguro, ip);
+				dp.setOperacion(operacion);
+				dp.setRedireccion(false);
+				
+				String pan = req.getParameter("pan");
+				String caducidad = req.getParameter("cad");
+				String cvv = req.getParameter("cvv");
+				dp.setDatosTarjeta(new DatosTarjeta(pan, caducidad, cvv));
+				client.open();
+				DetallesPagoIntf detallesPago = client.post(dp);
+				client.close();
+				req.setAttribute("datosPago", detallesPago);
+				if (detallesPago.getError() == null) {
+					req.getRequestDispatcher("/paginas/pagoFinalizado.jsp").forward(req, resp);
+				} else {
+					req.getRequestDispatcher("/paginas/error.jsp").forward(req, resp);
+				}
+
+			}
 		} catch (Exception e) {
 			req.getRequestDispatcher("/paginas/error.jsp").forward(req, resp);
 		}

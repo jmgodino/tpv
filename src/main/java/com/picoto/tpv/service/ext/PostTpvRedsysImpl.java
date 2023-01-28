@@ -22,6 +22,7 @@ import com.picoto.tpv.dto.DetallesPagoIntf;
 import com.picoto.tpv.dto.ext.DatosPagoTpvRedsys;
 import com.picoto.tpv.exceptions.TPVException;
 import com.picoto.tpv.service.intf.PostTpvIntf;
+import com.picoto.tpv.util.Utils;
 
 public class PostTpvRedsysImpl extends RedirectTpvRedsysImpl implements PostTpvIntf {
 
@@ -76,7 +77,7 @@ public class PostTpvRedsysImpl extends RedirectTpvRedsysImpl implements PostTpvI
 			postParams.add(new BasicNameValuePair("Ds_Signature", firma));
 			postRequest.setEntity(new UrlEncodedFormEntity(postParams));
 			CloseableHttpResponse response = httpClient.execute(postRequest, HttpClientContext.create());
-			debug(response.getStatusLine().toString());
+			Utils.debug(response.getStatusLine().toString());
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != 200) {
 				throw new IllegalArgumentException(String.format("El TPV no esta disponible %s", statusCode));
@@ -99,7 +100,7 @@ public class PostTpvRedsysImpl extends RedirectTpvRedsysImpl implements PostTpvI
 		
 		
 		if (res.indexOf("errorCode") > 0) {
-			debug(res);
+			Utils.debug(res);
 			throw new TPVException("Error al confirmar el pago");
 		}
 		

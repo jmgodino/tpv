@@ -6,7 +6,9 @@ import java.util.Random;
 
 import com.picoto.tpv.dao.TokenDao;
 import com.picoto.tpv.dto.DatosPagoTpvIntf;
+import com.picoto.tpv.dto.DatosTarjeta;
 import com.picoto.tpv.exceptions.DAOException;
+import com.picoto.tpv.util.Utils;
 
 public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 
@@ -33,6 +35,8 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 
 	private String token;
 	private boolean redireccion;
+
+	private DatosTarjeta datosTarjeta;
 
 	public DatosPagoTpvRedsys() {
 	}
@@ -81,10 +85,6 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 		return str != null && "S".equalsIgnoreCase(str);
 	}
 
-	private void debug(String str) {
-		System.out.println(str);
-	}
-
 	@Override
 	public String getNrc() {
 		return nrc;
@@ -110,7 +110,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 			TokenDao td = new TokenDao();
 			return td.getToken(titular);
 		} catch (DAOException e) {
-			debug("No se ha encontrado el token para: " + titular);
+			Utils.debug("No se ha encontrado el token para: " + titular);
 			return null;
 		}
 	}
@@ -182,14 +182,6 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	}
 
 	@Override
-	public String toString() {
-		return "DatosPagoTpv [nrc=" + nrc + ", importeCentimos=" + importeCentimos + ", pagoDirecto=" + pagoDirecto
-				+ ", concepto=" + concepto + ", titular=" + titular + ", direccionIp=" + direccionIp + ", idioma="
-				+ idioma + ", operacion=" + operacion + ", mediopago=" + mediopago + ", pagoinseguro=" + pagoinseguro
-				+ ", token=" + token + "]";
-	}
-
-	@Override
 	public boolean isRedireccion() {
 		return redireccion;
 	}
@@ -198,4 +190,25 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 		this.redireccion = redireccion;
 	}
 
+	public void setDatosTarjeta(DatosTarjeta datosTarjeta) {
+		this.datosTarjeta = datosTarjeta;
+	}
+
+	@Override
+	public DatosTarjeta getDatosTarjeta() {
+		return datosTarjeta;
+	}
+
+	@Override
+	public String toString() {
+		return "DatosPagoTpvRedsys [nrc=" + nrc + ", importeCentimos=" + importeCentimos + ", pagoDirecto="
+				+ pagoDirecto + ", concepto=" + concepto + ", titular=" + titular + ", direccionIp=" + direccionIp
+				+ ", idioma=" + idioma + ", operacion=" + operacion + ", mediopago=" + mediopago + ", pagoinseguro="
+				+ pagoinseguro + ", token=" + token + ", redireccion=" + redireccion + ", datosTarjeta=" + datosTarjeta
+				+ "]";
+	}
+
+
+
+	
 }

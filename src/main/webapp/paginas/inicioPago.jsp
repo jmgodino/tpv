@@ -25,28 +25,25 @@ label {
 </style>
 <script>
 function cambioMedioPago(medioPago) {
-	var lista = document.getElementById("listaOperacion");
+	toogleList("listaOperacion");
+	toogleList("listaPagoSeguro");
+	toogleList("listaPagoDirecto");
+	toogleList("listaPagoRest");
+}
+
+function toogleList(nombre) {
+	var lista = document.getElementById(nombre);
 	if (!lista.style.visibility || lista.style.visibility == 'visible') {
 		lista.style.visibility = 'hidden';
 	} else {
 		lista.style.visibility = 'visible';
-	}
-
-	var lista2 = document.getElementById("listaPagoSeguro");
-	if (!lista2.style.visibility || lista2.style.visibility == 'visible') {
-		lista2.style.visibility = 'hidden';
-	} else {
-		lista2.style.visibility = 'visible';
 	}	
-
-	var lista3 = document.getElementById("listaPagoDirecto");
-	if (!lista3.style.visibility || lista3.style.visibility == 'visible') {
-		lista3.style.visibility = 'hidden';
-	} else {
-		lista3.style.visibility = 'visible';
-	}	
-	
 }
+
+function cambioPagoRest() {
+	toogleList("datosTarjeta");
+}
+
 </script>
 </head>
 <body>
@@ -82,9 +79,23 @@ function cambioMedioPago(medioPago) {
 		</li>
 
 		<li id="listaPagoDirecto"><label for="pagodirecto">Realizar/Solicitar Pago Directo:</label>
-		<input type="radio" name="pagodirecto" value="S" checked>Si</input>
-		<input type="radio" name="pagodirecto" value="N">No</input>
+		<input type="radio" name="pagodirecto" value="S">Si</input>
+		<input type="radio" name="pagodirecto" value="N" checked>No</input>
 		<span class="textoAyuda">Esta opci&oacute;n le permitir&aacute; realizar pr&oacute;ximos pagos sin tener que introducir los datos de su tarjeta</span>
+		</li>
+
+		<li id="listaPagoRest"><label for="pagorest">Realizar Pago desde el comercio</label>
+		<input type="radio" name="pagorest" value="S" onChange="cambioPagoRest()">Si</input>
+		<input type="radio" name="pagorest" value="N" onChange="cambioPagoRest()" checked>No</input>
+		<span class="textoAyuda">Esta opci&oacute;n le permitira pagar desde el comercio con datos de tarjeta sin tener que acceder a una web externa</span>
+		</li>
+
+		<li>
+		<ul id="datosTarjeta" class="no-bullets" style="visibility:hidden;">
+			<li><label for="pan">N. Tarjeta:</label><input type="text" name="pan" value="4548810000000003"/></li>
+			<li><label for="cad">F. Caducidad:</label><input type="text" name="cad" value="4912"/></li>
+			<li><label for="cvv">CVV2:</label><input type="text" name="cvv" value="123"/></li>
+		</ul>
 		</li>
 
 		<li><input type="submit" value= "Iniciar Pago"/></li>

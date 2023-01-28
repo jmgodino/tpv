@@ -35,5 +35,7 @@ public interface DatosPagoTpvIntf {
 	public String toString();
 
 	public boolean isRedireccion();
+
+	DatosTarjeta getDatosTarjeta();
 	
 }

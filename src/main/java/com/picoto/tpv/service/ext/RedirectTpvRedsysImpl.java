@@ -1,10 +1,8 @@
 package com.picoto.tpv.service.ext;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,12 +13,14 @@ import org.apache.commons.io.IOUtils;
 
 import com.picoto.tpv.dao.TokenDao;
 import com.picoto.tpv.dto.DatosPagoTpvIntf;
+import com.picoto.tpv.dto.DatosTarjeta;
 import com.picoto.tpv.dto.DetallesPagoIntf;
 import com.picoto.tpv.dto.ext.DatosPagoTpvRedsys;
 import com.picoto.tpv.dto.ext.DetallesPagoRedsys;
 import com.picoto.tpv.exceptions.TPVException;
 import com.picoto.tpv.service.intf.PostTpvIntf;
 import com.picoto.tpv.service.intf.RedirectTpvIntf;
+import com.picoto.tpv.util.Utils;
 
 import sis.redsys.api.ApiMacSha256;
 
@@ -64,10 +64,10 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 	public void procesarPeticionTPV(DatosPagoTpvIntf datosPago) throws TPVException {		
 
 		try {
-			debug(datosPago.toString());
+			Utils.debug(datosPago.toString());
 			prepareRequest(datosPago);
 			payload = apiMacSha256.createMerchantParameters();
-			debug("Peticion:" + apiMacSha256.decodeMerchantParameters(payload));
+			Utils.debug("Peticion:" + apiMacSha256.decodeMerchantParameters(payload));
 			signature = apiMacSha256.createMerchantSignature(CLAVE_COMERCIO);
 		} catch (Exception e) {
 			throw new TPVException("Error procensado peticion de pago: "+e.getMessage());
@@ -95,7 +95,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		if (datosPago.isPagoTarjeta() && datosPago.isPagoDirecto()) {
 			String token = datosPago.getToken();
 			// Si no hay token, solo solicitamos el pago directo, si lo hay lo mandamos
-			if (esVacio(token)) {
+			if (Utils.esVacio(token)) {
 				apiMacSha256.setParameter("DS_MERCHANT_IDENTIFIER", "REQUIRED");
 			} else {
 				// Si hay token registrado lo usamos
@@ -109,7 +109,6 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 		// Datos del pedido:
 		apiMacSha256.setParameter("DS_MERCHANT_AMOUNT", datosPago.getImporteCentimos()); // En céntimos de euro
-		debug("Importe: " + datosPago.getImporteCentimos());
 
 		apiMacSha256.setParameter("DS_MERCHANT_ORDER", datosPago.getNrc()); // NRC
 		apiMacSha256.setParameter("DS_MERCHANT_TAX_REFERENCE", ""); // Aqui podría ir el NRC también si se habilita
@@ -136,6 +135,15 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 				(datosPago.isPreautorizacion() ? DetallesPagoRedsys.TEXTO_CONFIRMAR_PREAUTORIZACION : DetallesPagoRedsys.TEXTO_AUTORIZADO_PREAUTORIZACION) + datosPago.getTitular());
 		apiMacSha256.setParameter("DS_MERCHANT_MERCHANTNAME", COMERCIO_NOMBRE);
 		
+		// Solo para el caso de peticion REST de pago, que no vamos a usar casi con total seguridad
+		DatosTarjeta datosTarjeta = datosPago.getDatosTarjeta();
+		if (datosTarjeta != null) {
+			apiMacSha256.setParameter("DS_MERCHANT_DIRECTPAYMENT", "true");
+			apiMacSha256.setParameter("DS_MERCHANT_PAN", datosTarjeta.getPan());
+			apiMacSha256.setParameter("DS_MERCHANT_EXPIRYDATE", datosTarjeta.getCaducidad());
+			apiMacSha256.setParameter("DS_MERCHANT_CVV2", datosTarjeta.getCvv());
+
+		}
 
 	}
 
@@ -166,11 +174,11 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 			if (isCodigoRespuestaAfirmativo()) {
 
-				debug("Codigo respuesta afirmativo");
+				Utils.debug("Codigo respuesta afirmativo");
 				capturarDatosBasicosPago(detallespago);
 				
 				if (detallespago.necesitaConfirmacion()) {
-					debug("Confirmando operacion de preautorizacion");
+					Utils.debug("**************** Confirmando operacion de preautorizacion ****************");
 					detallespagoConfirmacion = confirmarOperacion(detallespago.getImporteTpv(), detallespago.getNrc(), detallespago.getNif());
 					if (detallespagoConfirmacion.isConfirmacionCorrecta()) {
 						// Ver si esta es la forma adecuada
@@ -182,7 +190,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 				} else {
 					capturarDetallesPago(detallespago);
 				}
-				debug(detallespago.toString());
+				Utils.debug(detallespago.toString());
 				
 				gestionarPagoDirectoRespuesta(detallespago);
 				
@@ -240,9 +248,9 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		try {
 			String firmaCalculada = apiMacSha256.createMerchantSignatureNotif(CLAVE_COMERCIO, datos);
 			if (firmaCalculada.equals(firmaRespuesta)) {
-				debug("FIRMA OK. Realizar tareas en el servidor");
+				Utils.debug("FIRMA OK. Realizar tareas en el servidor");
 			} else {
-				debug(String.format("FIRMA KO. Error, firma inválida %s vs %s", firmaRespuesta, firmaCalculada));
+				Utils.debug(String.format("FIRMA KO. Error, firma inválida %s vs %s", firmaRespuesta, firmaCalculada));
 				throw new TPVException("La firma no seha podido validar. Operación descartada");
 			} 
 		} catch (Exception e) {
@@ -252,13 +260,13 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 	private void debugDatosEnClaro(String datos, ApiMacSha256 apiMacSha256) throws UnsupportedEncodingException {
 		String decodec = apiMacSha256.decodeMerchantParameters(datos);
-		debug("Datos salida en claro: " + decodec);
+		Utils.debug("Datos salida en claro: " + decodec);
 	}
 
 	private boolean isCodigoRespuestaAfirmativo() {
 		String codResp = getCodigoRespuesta();
 		int codRespNumerico = new Integer(codResp);
-		debug("codigo respuesta: " + codRespNumerico);
+		Utils.debug("codigo respuesta: " + codRespNumerico);
 		// Ojo que no solo 0000 es bueno lo es de 0000 hasta 0099 para autorizaciones
 
 		return 0 <= codRespNumerico && codRespNumerico < 100;
@@ -275,9 +283,9 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		if (optToken.isPresent()) {
 			String token = optToken.get();
 			detallesPago.setToken(token);
-			debug("Token y NIF recuperado: " + token + ", " + nif);
+			Utils.debug("Token y NIF recuperado: " + token + ", " + nif);
 			// Si en la respuesta tenemos token y NIF del ordenante
-			if (!esVacio(token) && !esVacio(nif)) {
+			if (!Utils.esVacio(token) && !Utils.esVacio(nif)) {
 				// Solo si hay fecha de expiración, registramos un nuevo token
 				Optional<String> optFecha = getCampoOpcional("Ds_ExpiryDate");
 				if (optFecha.isPresent()) {
@@ -313,14 +321,6 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 		return detallesPago;
 
-	}
-
-	protected boolean esVacio(String str) {
-		return str == null || str.trim().isEmpty();
-	}
-
-	protected void debug(String msg) {
-		System.out.println(msg);
 	}
 
 	protected Optional<String> getCampoOpcional(String nombre) {

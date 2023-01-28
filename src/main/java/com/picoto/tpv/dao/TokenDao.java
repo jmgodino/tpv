@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.Date;
 
 import com.picoto.tpv.exceptions.DAOException;
+import com.picoto.tpv.util.Utils;
 
 
 public class TokenDao {
@@ -24,7 +25,7 @@ public class TokenDao {
          
         statement.execute(sql);
         
-        debug("Tabla eliminada");
+        Utils.debug("Tabla eliminada");
         
         closeConnection(statement);
 
@@ -41,7 +42,7 @@ public class TokenDao {
 		         
 		        statement.execute(sql);
 		        
-		        debug("Tabla creada");
+		        Utils.debug("Tabla creada");
 		        
 		        closeConnection(statement);
 		 
@@ -59,7 +60,7 @@ public class TokenDao {
 			statement.setDate(3, new java.sql.Date(fecha.getTime()));
 			int rows = statement.executeUpdate();
 			if (rows > 0) {
-				debug(String.format("Registro creado para NIF %s", nif));
+				Utils.debug(String.format("Registro creado para NIF %s", nif));
 			}
 			closeConnection(statement);
 		} catch (Exception e) {
@@ -79,7 +80,7 @@ public class TokenDao {
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				token = rs.getString(1);
-				debug(String.format("Registro encontrado: %s", token));
+				Utils.debug(String.format("Registro encontrado: %s", token));
 			}
 			rs.close();
 			statement.close();
@@ -104,7 +105,7 @@ public class TokenDao {
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				fecha = rs.getString(1);
-				debug(String.format("Registro encontrado: %s", fecha));
+				Utils.debug(String.format("Registro encontrado: %s", fecha));
 			}
 			rs.close();
 			statement.close();
@@ -119,11 +120,6 @@ public class TokenDao {
 		}
 	}
 	
-	protected static void debug(String string) {
-		System.out.println(string);
-		
-	}
-
 
 	private void getConnection() throws SQLException {
         String jdbcURL = "jdbc:h2:./test";

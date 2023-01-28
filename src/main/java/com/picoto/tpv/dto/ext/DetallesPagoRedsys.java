@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ResourceBundle;
 
 import com.picoto.tpv.dto.DetallesPagoIntf;
+import com.picoto.tpv.util.Utils;
 
 public class DetallesPagoRedsys implements DetallesPagoIntf {
 
@@ -159,11 +160,7 @@ public class DetallesPagoRedsys implements DetallesPagoIntf {
 
 	@Override
 	public boolean necesitaConfirmacion() {
-		return !esVacio(detalles) && detalles.indexOf(TEXTO_CONFIRMAR_PREAUTORIZACION) >= 0;
-	}
-
-	protected boolean esVacio(String str) {
-		return str == null || str.trim().isEmpty();
+		return !Utils.esVacio(detalles) && detalles.indexOf(TEXTO_CONFIRMAR_PREAUTORIZACION) >= 0;
 	}
 
 	public boolean isConfirmacionCorrecta() {
@@ -214,7 +211,7 @@ public class DetallesPagoRedsys implements DetallesPagoIntf {
 	
 	@Override
 	public String getDetalleTipoTarjeta() {
-		if (esVacio(tipoTarjeta)) {
+		if (Utils.esVacio(tipoTarjeta)) {
 			return tiposTarjeta.getString("X");
 		}
 		return tiposTarjeta.getString(tipoTarjeta);
