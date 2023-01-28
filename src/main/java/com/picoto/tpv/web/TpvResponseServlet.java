@@ -31,7 +31,7 @@ public class TpvResponseServlet extends HttpServlet {
 			
 			req.setAttribute("datosPago", detalles);
 			if (detalles.getError() == null) {
-				req.getRequestDispatcher("/paginas/pagoFinalizado.jsp").forward(req, resp);
+				req.getRequestDispatcher("/paginas/finPago.jsp").forward(req, resp);
 			} else {
 				req.getRequestDispatcher("/paginas/error.jsp").forward(req, resp);
 			}

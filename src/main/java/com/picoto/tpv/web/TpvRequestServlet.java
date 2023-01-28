@@ -47,8 +47,7 @@ public class TpvRequestServlet extends HttpServlet {
 			req.setAttribute("datosPago",dp);
 			
 			if (!Utils.opcionActivada(pagorest)) {
-				Utils.debug("Invoca a: /paginas/detallesPagoTpv.jsp");
-				req.getRequestDispatcher("/paginas/detallesPagoTpv.jsp").forward(req, resp);
+				req.getRequestDispatcher("/paginas/detallesPago.jsp").forward(req, resp);
 			} else {
 				PostTpvRedsysImpl client = new PostTpvRedsysImpl();
 				dp.setOperacion(operacion);
@@ -64,7 +63,7 @@ public class TpvRequestServlet extends HttpServlet {
 				client.close();
 				req.setAttribute("datosPago", detallesPago);
 				if (detallesPago.getError() == null) {
-					req.getRequestDispatcher("/paginas/pagoFinalizado.jsp").forward(req, resp);
+					req.getRequestDispatcher("/paginas/finPago.jsp").forward(req, resp);
 				} else {
 					req.getRequestDispatcher("/paginas/error.jsp").forward(req, resp);
 				}
