@@ -21,7 +21,7 @@
 <body>
 <ul class="no-bullets">
 <li>
-	<h1>Va a realizar un pago con los siguientes datos mediante un TPV ajeno a la Sede Electr&oacute;nica de la AEAT</h1>
+	<h1>Va a realizar un pago con los siguientes datos mediante un TPV ajeno a esta Sede Electr&oacute;nica</h1>
 </li>
 		<li><label for="modelo">Modelo: </label>${param.modelo}</li>
 		<li><label for="ejercicio">Ejercicio: </label>${param.ejercicio}</li>
@@ -30,7 +30,7 @@
 		<li><label for="importe">Importe en euros: </label>${param.importe}</li>
 		<li><label for="importe">Importe a pagar en TPV: </label>${datosPago.importeCentimos}</li>
 <li>
-	<h2 class="rojo">Recuerde que esta forma de pago puede suponer el pago de una tasa de descuento ajena a la AEAT del 0,31%</h2>
+	<h2 class="rojo">Recuerde que esta forma de pago puede suponer el pago de una tasa de descuento ajena a este establecimiento del 0,31%</h2>
 </li>
 <li>
 	<form action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST" target="_blank">
