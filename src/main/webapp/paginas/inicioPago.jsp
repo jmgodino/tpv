@@ -62,9 +62,7 @@ function cambioPagoRest() {
 		<li><label for="periodo">Periodo:</label><input type="text" name="periodo" value="0A"/></li>
 		<li><label for="nif">NIF Ordenante:</label><input type="text" name="nif" value="89890001K"/></li>
 		<li>
-		<label for="importe">Importe en euros:</label>
-		<input type="text" name="importe" value="10.00"/>
-		<span class="textoAyuda">Por debajo de 5€ se admiten operaciones sin necesidad de EMV 3DS</span>
+		<label for="importe">Importe en euros:</label><input type="text" name="importe" value="10.00"/><span class="textoAyuda">Por debajo de 5€ admitimos operaciones sin necesidad de EMV 3DS</span>
 		</li>
 
 		<li><h2>Opciones de idioma</h2></li>
@@ -73,11 +71,11 @@ function cambioPagoRest() {
 
 		<li><h2>Opciones de pago</h2></li>
 
-		<li><label for="mediopago">Medio de Pago:</label><select name="mediopago" onChange="cambioMedioPago(this)"><option value="C">Tarjeta</option><option value="z">Bizum</option></select></li>
+		<li>
+		<label for="mediopago">Medio de Pago:</label><select name="mediopago" onChange="cambioMedioPago(this)"><option value="C">Tarjeta</option><option value="z">Bizum</option></select>
+		</li>
 		<li id="listaOperacion">
-		<label for="operacion">Operacion:</label>
-		<select name="operacion"><option value="0">Autorizacion</option><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_PREAUTORIZACION%>">Preautorizacion</option></select>
-				<span class="textoAyuda">El uso de preautorizacion, implica una primera operación de autenticación de los datos de pago, y una segunda operación de confirmación por parte del comercio</span>
+		<label for="operacion">Operacion:</label><select name="operacion"><option value="0">Autorizacion</option><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_PREAUTORIZACION%>">Preautorizacion</option></select><span class="textoAyuda">El uso de preautorizacion, implica una primera operación de autenticación de los datos de pago, y una segunda operación de confirmación por parte del comercio</span>
 		</li>
 
 		<li id="listaPagoSeguro"><label for="pagoinseguro">Admitir Pago No Seguro:</label>
