@@ -81,7 +81,7 @@ function cambioPagoRest() {
 		<li id="listaPagoSeguro"><label for="pagoinseguro">Admitir Pago No Seguro:</label>
 		<input type="radio" name="pagoinseguro" value="S">Si</input>
 		<input type="radio" name="pagoinseguro" value="N" checked>No</input>
-		<span class="textoAyuda">Esta opción le permitirá realizar pagos usando tan solo datos de su tarjeta, sin necesidad de comprobaciones adicionales. Menor nivel de seguridad</span>
+		<span class="textoAyuda">Esta opción le permitirá realizar pagos usando tan solo datos de su tarjeta, sin necesidad de comprobaciones adicionales. Menor nivel de seguridad al no usar EMV 3DS</span>
 		</li>
 
 		<li id="listaPagoDirecto"><label for="pagodirecto">Realizar/Solicitar Pago Directo:</label>

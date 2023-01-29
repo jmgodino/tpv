@@ -45,5 +45,10 @@ M&eacute;todo de pago: ${datosPago.detalleMetodoPago}
 Detalles del pago: ${datosPago.detalles}
 </li>
 </ul>	
+<ul class="no-bullets">
+<li>
+	<a href="/tpv/TpvInicio">Realizar otro pago</a> 
+</li>
+</ul>
 </body>
 </html>
