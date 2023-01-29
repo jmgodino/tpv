@@ -16,7 +16,7 @@
 <body>
 <ul class="no-bullets">
 <li>
-	<h1>Pago finalizado correctamente. NRC ${datosPago.nrc} por importe <fmt:formatNumber type="number" pattern="0.00" value="${datosPago.importe}"/>€</h1> 
+	<h1>Pago finalizado correctamente. Justificante ${datosPago.nrc} por importe (comision incluída): <fmt:formatNumber type="number" pattern="0.00" value="${datosPago.importe}"/>€</h1> 
 </li>
 <li>
 Pago seguro: ${datosPago.pagoSeguroTexto}

@@ -25,7 +25,7 @@ label {
 </style>
 <script>
 function cambioMedioPago(medioPago) {
-	toogleList("listaOperacion");
+	//toogleList("listaOperacion");
 	toogleList("listaPagoSeguro");
 	toogleList("listaPagoDirecto");
 	toogleList("listaPagoRest");
@@ -72,7 +72,7 @@ function cambioPagoRest() {
 		<li><h2>Opciones de pago</h2></li>
 
 		<li>
-		<label for="mediopago">Medio de Pago:</label><select name="mediopago" onChange="cambioMedioPago(this)"><option value="C">Tarjeta</option><option value="z">Bizum</option></select>
+		<label for="mediopago">Medio de Pago:</label><select name="mediopago" onChange="cambioMedioPago(this)"><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_TARJETA%>">Tarjeta</option><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_BIZUM%>">Bizum</option></select>
 		</li>
 		<li id="listaOperacion">
 		<label for="operacion">Operacion:</label><select name="operacion"><option value="0">Autorizacion</option><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_PREAUTORIZACION%>">Preautorizacion</option></select><span class="textoAyuda">El uso de preautorizacion, implica una primera operación de autenticación de los datos de pago, y una segunda operación de confirmación por parte del comercio</span>
