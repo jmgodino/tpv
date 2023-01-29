@@ -57,8 +57,6 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	public DatosPagoTpvRedsys(String modelo, String ejercicio, String periodo, String nif, String importe,
 			String idioma, String pagodirecto, String mediopago, String pagoinseguro, String ip) {
 
-		calcularImporteCentimosTpv(importe);
-
 		concepto = String.format("PAGO DE IMPUESTOS. AUTOLIQUIDACION MODELO %s EJERCICIO %s PERIODO %s", modelo,
 				ejercicio, periodo);
 		titular = nif;
@@ -77,6 +75,8 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 		String valorRnd = "" + (new Random().nextInt(10000000) + 100000000);
 		nrc = "1001234567890" + valorRnd;
 
+		// Ojo los calculos tras haber seteado todo bien
+		calcularImporteCentimosTpv(importe);
 		calcularHash(modelo, ejercicio, periodo, nif, importe);
 	}
 
