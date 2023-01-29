@@ -91,7 +91,7 @@ function toggle(nombre) {
 &nbsp;
 </li>
 <li>
-	<input type="checkbox" id="condiciones" name="condiciones" onChange="aceptaCondiciones(this)"> Acepta las condiciones del servicio incluido un recargo del 0,31% ajeno al comercio
+	<input type="checkbox" id="condiciones" name="condiciones" onChange="aceptaCondiciones(this)"> Acepta las condiciones del servicio incluido el intercambio de datos con la entidad gestora del TPV además de un recargo del 0,31% en pago con tarjetas ajeno al comercio.
 </li>
 <li>
 &nbsp;
