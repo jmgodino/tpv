@@ -98,7 +98,7 @@ function toggle(nombre) {
 </li>
 
 <li id="formularioPago"  style="visibility:hidden;">
-	<form action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST" target="_blank">
+	<form action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
 		<input type="hidden" id="versionTpv" name="Ds_SignatureVersion" value=""/>
 		<input type="hidden" id="parametrosTpv" name="Ds_MerchantParameters" value=""/>
 		<input type="hidden" id="firmaTpv" name="Ds_Signature" value= ""/>
