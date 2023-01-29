@@ -1,7 +1,6 @@
 package com.picoto.tpv.service.ext;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
@@ -124,7 +123,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 			apiMacSha256.setParameter("DS_MERCHANT_EMV3DS",datosSeguridad);
 			
 			// Forzamos no uso de EMV3DS si el importe es bajo.
-			if (datosPago.noSuperaLimiteMinimo()) {
+			if (datosPago.noSuperaLimiteMaximo()) {
 				apiMacSha256.setParameter("DS_MERCHANT_EXCEP_SCA", "LWV");
 			}
 		}

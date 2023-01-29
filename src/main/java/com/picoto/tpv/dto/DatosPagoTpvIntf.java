@@ -46,6 +46,6 @@ public interface DatosPagoTpvIntf {
 
 	public boolean hashValido(String hash);
 
-	public boolean noSuperaLimiteMinimo();
+	public boolean noSuperaLimiteMaximo();
 	
 }

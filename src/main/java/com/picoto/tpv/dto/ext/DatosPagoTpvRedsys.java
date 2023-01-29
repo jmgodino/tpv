@@ -23,10 +23,12 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 
 	public static final String OPERACION_TARJETA = "C";
 	public static final String OPERACION_BIZUM = "z";
+	public static final String OPERACION_PAYPAL = "p";
 
-	public static final BigDecimal LIMITE_CENTIMOS = new BigDecimal("500");
+	public static final BigDecimal LIMITE_PAGO_INSEGURO = new BigDecimal("5.0");
 	public static final BigDecimal CIEN = new BigDecimal("100");
 	public static final BigDecimal UNIDAD = new BigDecimal("1");
+	public static final BigDecimal CERO = new BigDecimal("0");
 
 	
 	private String nrc;
@@ -79,9 +81,15 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	}
 
 	private void calcularImporteCentimosTpv(String importe) {
-		// ImporteTPV = 100 * (Resultado/ (1 - TasaDescuento))
+		// ImporteTPV = 100 * (Resultado/ (1 - TasaDescuento)) salvo en BIZUM.
 
-		BigDecimal importeComision = new BigDecimal(TASA_DESCUENTO);
+		BigDecimal importeComision = null;
+		if (isPagoBizum()) {
+			importeComision = CERO;
+		} else {
+			importeComision = new BigDecimal(TASA_DESCUENTO);			
+		}
+
 		BigDecimal divisor = UNIDAD.subtract(importeComision);
 
 		BigDecimal dividendo = new BigDecimal(importe);
@@ -241,8 +249,8 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	}
 
 	@Override
-	public boolean noSuperaLimiteMinimo() {
-		return new BigDecimal(importeCentimos).compareTo(LIMITE_CENTIMOS) < 0;
+	public boolean noSuperaLimiteMaximo() {
+		return importeIngresar.compareTo(LIMITE_PAGO_INSEGURO) < 0;
 	}
 	
 }
