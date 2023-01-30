@@ -148,7 +148,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 	private String getDatoSeguridad() throws TPVException {
 		try {
-			return String.format(IOUtils.resourceToString("/emv3ds.txt",StandardCharsets.UTF_8),"NIF 89890001K",724,"MA","MA","Calle Encanto","5 Portal 1","28100", "Jose Miguel GM","test@gmail.com",034,666666666);
+			return String.format(IOUtils.resourceToString("/emv3ds.txt",StandardCharsets.UTF_8),724,"MA","MA","Calle Encanto","5 Portal 1","28100", "Jose Miguel GM","test@gmail.com",034,666666666);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new TPVException("Error al recuperar datos de seguridad EMV3DS");
