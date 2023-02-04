@@ -124,7 +124,7 @@ public class NRCDao {
 		try {
 			getConnection();
 			List<String> lista = new ArrayList<>();
-			String sql = "select nrc, importe from tpv_nrcs where nif = ?";
+			String sql = "select nrc, importe from tpv_nrcs where nif = ? order by fecha";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, nif);
 			ResultSet rs = statement.executeQuery();
