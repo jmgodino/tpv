@@ -15,6 +15,8 @@ public interface DatosPagoTpvIntf {
 	public String getConcepto();
 
 	public String recuperaToken();
+	
+	public String getNif();
 
 	public String getTitular();
 	
@@ -47,5 +49,7 @@ public interface DatosPagoTpvIntf {
 	public boolean hashValido(String hash);
 
 	public boolean noSuperaLimiteMaximo();
+
+	BigDecimal getImporteNrc();
 	
 }

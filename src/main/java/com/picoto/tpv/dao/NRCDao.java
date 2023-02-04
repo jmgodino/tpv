@@ -1,12 +1,15 @@
 package com.picoto.tpv.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.picoto.tpv.exceptions.DAOException;
 import com.picoto.tpv.util.Utils;
@@ -36,7 +39,7 @@ public class NRCDao {
 		 
 				getConnection();
 		
-		        String sql = "create table tpv_nrcs (nrc varchar(22) primary key, nif varchar(9), fecha date, estado integer)";
+		        String sql = "create table tpv_nrcs (nrc varchar(22) primary key, nif varchar(9), importe decimal(13,2), fecha date, estado integer)";
 		         
 		        Statement statement = con.createStatement();
 		         
@@ -49,16 +52,17 @@ public class NRCDao {
 	}
 	
 	
-	public void registrarNRC(String nif, String nrc, Date fecha) {
+	public void registrarNRC(String nif, String nrc, BigDecimal importe, Date fecha) {
 		
 		try {
 			getConnection();
-			String sql = "insert into tpv_nrcs (nif, nrc, fecha, estado) values (?, ?, ?, ?)";
+			String sql = "insert into tpv_nrcs (nif, nrc, importe, fecha, estado) values (?, ?, ?, ?, ?)";
 			PreparedStatement statement = con.prepareStatement(sql);
 			statement.setString(1, nif);
 			statement.setString(2, nrc);
-			statement.setDate(3, new java.sql.Date(fecha.getTime()));
-			statement.setInt(4, 1);
+			statement.setBigDecimal(3, importe);
+			statement.setDate(4, new java.sql.Date(fecha.getTime()));
+			statement.setInt(5, 1);
 			int rows = statement.executeUpdate();
 			if (rows > 0) {
 				Utils.debug(String.format("Registro creado para NRC %s", nrc));
@@ -115,6 +119,27 @@ public class NRCDao {
 		}
 	}
 
+
+	public List<String> getPagos(String nif) {
+		try {
+			getConnection();
+			List<String> lista = new ArrayList<>();
+			String sql = "select nrc, importe from tpv_nrcs where nif = ?";
+			PreparedStatement statement = con.prepareStatement(sql);
+			statement.setString(1, nif);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				lista.add("NRC: "+rs.getString(1)+" Importe: "+rs.getBigDecimal(2));
+			}
+			rs.close();
+			statement.close();
+			closeConnection(statement); // finally
+			return lista;
+		} catch (Exception e) {
+			throw new DAOException(String.format("No se ha podido recuperar la lista de NRCs para el NIF %s", nif));
+		}
+	}
+
 	
 	public boolean isConsolidado(String nrc) {
 		try {
@@ -158,11 +183,17 @@ public class NRCDao {
 		NRCDao t = new NRCDao();
 		t.destruir();
 		t.preparar();
-		String nrc = "1001234567890123456789";
-		t.registrarNRC("12345678Z",nrc, new Date());
-		t.getNRC(nrc);
-		Utils.debug("Consolidado? "+ t.isConsolidado(nrc));
-		t.consolidarNRC(nrc);
-		Utils.debug("Consolidado? "+ t.isConsolidado(nrc));
+		String nrc1 = "1001234567890123456789";
+		String nrc2 = "1001234567890123456788";
+		t.registrarNRC("12345678Z",nrc1, new BigDecimal("123.45"), new Date());
+		t.registrarNRC("12345678Z",nrc2, new BigDecimal("54.32"), new Date());
+		t.getNRC(nrc1);
+		Utils.debug("Consolidado? "+ t.isConsolidado(nrc1));
+		t.consolidarNRC(nrc1);
+		Utils.debug("Consolidado? "+ t.isConsolidado(nrc1));
+		List<String> pagos = t.getPagos("12345678Z");
+		for (String pago : pagos) {
+			Utils.debug(pago);
+		}
 	}
 }

@@ -32,6 +32,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 
 	
 	private String nrc;
+	private BigDecimal importeNrc;
 	private String importeCentimos;
 	private BigDecimal importeIngresar;
 	private boolean pagoDirecto;
@@ -66,6 +67,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 		direccionIp = ip;
 		this.mediopago = mediopago;
 		this.pagoinseguro = pagoinseguro;
+		this.importeNrc = new BigDecimal(importe);
 
 		if (esAfirmativo(pagodirecto)) {
 			this.pagoDirecto = true;
@@ -258,5 +260,14 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	public boolean noSuperaLimiteMaximo() {
 		return importeIngresar.compareTo(LIMITE_PAGO_INSEGURO) < 0;
 	}
+
+	@Override
+	public String getNif() {
+		return this.nif;
+	}
 	
+	@Override
+	public BigDecimal getImporteNrc() {
+		return importeNrc;
+	}
 }

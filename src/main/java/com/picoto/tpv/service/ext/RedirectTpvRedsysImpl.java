@@ -69,6 +69,9 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 			payload = apiMacSha256.createMerchantParameters();
 			Utils.debug("Peticion:" + apiMacSha256.decodeMerchantParameters(payload));
 			signature = apiMacSha256.createMerchantSignature(CLAVE_COMERCIO);
+			NRCDao dao = new NRCDao();
+			dao.registrarNRC(datosPago.getNif(), datosPago.getNrc(), datosPago.getImporteNrc(), new Date());
+
 		} catch (Exception e) {
 			throw new TPVException("Error procensado peticion de pago: "+e.getMessage());
 		}

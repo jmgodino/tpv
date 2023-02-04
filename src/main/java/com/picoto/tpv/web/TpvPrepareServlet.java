@@ -55,8 +55,6 @@ public class TpvPrepareServlet extends HttpServlet {
 			}
 			
 			client.procesarPeticionTPV(dp);
-			NRCDao dao = new NRCDao();
-			dao.registrarNRC(nif, dp.getNrc(), new Date());
 			
 			JSONObject salida = new JSONObject();
 			salida.put("version", client.getVersion());
