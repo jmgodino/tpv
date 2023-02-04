@@ -64,6 +64,7 @@ public class TokenDao {
 			}
 			closeConnection(statement);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new DAOException(String.format("No se ha podido registrar el token para %s", nif));
 		}
 

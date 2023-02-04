@@ -107,3 +107,15 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: /home/jmgodino/e
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "TPV_TOKENS" no encontrada
 Table "TPV_TOKENS" not found; SQL statement:
 drop table tpv_tokens [42102-214]
+2023-02-04 11:08:49 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "NIF CHARACTER VARYING(9)": "'89890001K-JOSE MIGUEL GOD. MUN. (SEDE AEAT)' (43)"
+Value too long for column "NIF CHARACTER VARYING(9)": "'89890001K-JOSE MIGUEL GOD. MUN. (SEDE AEAT)' (43)"; SQL statement:
+insert into tpv_tokens (nif, token, fecha) values (?, ?, ?) [22001-214]
+2023-02-04 11:10:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "NIF CHARACTER VARYING(9)": "'89890001K-JOSE MIGUEL GOD. MUN. (SEDE AEAT)' (43)"
+Value too long for column "NIF CHARACTER VARYING(9)": "'89890001K-JOSE MIGUEL GOD. MUN. (SEDE AEAT)' (43)"; SQL statement:
+insert into tpv_tokens (nif, token, fecha) values (?, ?, ?) [22001-214]
+2023-02-04 11:14:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "NIF CHARACTER VARYING(9)": "'-JOSE MIGUEL GOD. MUN. (SEDE AEAT)' (34)"
+Value too long for column "NIF CHARACTER VARYING(9)": "'-JOSE MIGUEL GOD. MUN. (SEDE AEAT)' (34)"; SQL statement:
+insert into tpv_tokens (nif, token, fecha) values (?, ?, ?) [22001-214]

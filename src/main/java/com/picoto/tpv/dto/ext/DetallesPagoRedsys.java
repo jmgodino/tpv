@@ -169,13 +169,13 @@ public class DetallesPagoRedsys implements DetallesPagoIntf {
 	}
 
 	public String getNif() {
-		return getSubcadena(getDetalles(), ":", 2);
+		return getSubcadena(getDetalles(), ":", 2, 9);
 	}
 
-	private String getSubcadena(String cadena, String separador, int posicion) {
+	private String getSubcadena(String cadena, String separador, int posicion, int longitud) {
 		String[] trozos = cadena.split(separador);
 		if (trozos.length >= posicion) {
-			return trozos[posicion - 1];
+			return trozos[posicion - 1].substring(0,longitud);
 		} else
 			return null;
 	}
