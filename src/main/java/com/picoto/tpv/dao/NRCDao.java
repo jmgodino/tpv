@@ -19,7 +19,7 @@ public class NRCDao {
 	public void destruir() throws SQLException {
 		getConnection();
 		
-        String sql = "drop table tpv_nrcs";
+        String sql = "drop table tpv_nrcs if exists";
          
         Statement statement = con.createStatement();
          

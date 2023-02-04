@@ -19,7 +19,7 @@ public class TokenDao {
 	public void destruir() throws SQLException {
 		getConnection();
 		
-        String sql = "drop table tpv_tokens";
+        String sql = "drop table tpv_tokens if exists";
          
         Statement statement = con.createStatement();
          
@@ -135,9 +135,9 @@ public class TokenDao {
 	
 	public static void main (String args[]) throws SQLException {
 		TokenDao t = new TokenDao();
-		//t.destruir();
-		//t.preparar();
-		//t.registrarToken("12345678Z","asdfasdfasdfsadfasdfasf", new Date());
+		t.destruir();
+		t.preparar();
+		t.registrarToken("89890001K","asdfasdfasdfsadfasdfasf", new Date());
 		t.getToken("89890001K");
 		t.getFecha("89890001K");
 	}
