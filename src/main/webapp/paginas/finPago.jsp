@@ -11,32 +11,35 @@
 .no-bullets {
     list-style-type: none;
 }
+.textoDestacado {
+	color: blue;
+	font-style: bold;
+	font-size: 18px;
+}
 </style>
 </head>
 <body>
+<img src="/tpv/aeat.png" style="padding-left:45px;">
 <ul class="no-bullets">
 <li>
-	<h1>Pago finalizado correctamente. Justificante ${datosPago.nrc} por importe (comision incluída): <fmt:formatNumber type="number" pattern="0.00" value="${datosPago.importe}"/>€</h1> 
+	<h1>Pago finalizado correctamente. NRC Consolidado: ${datosPago.nrc}</h1> 
 </li>
 <li>
-Pago seguro: ${datosPago.pagoSeguroTexto}
+Importe del pago (comisión de gestión incluída): <span class="textoDestacado"><fmt:formatNumber type="number" pattern="0.00" value="${datosPago.importe}"/>€</span>
 </li>
 <li>
-Pa&iacute;s del m&eacute;todo de pago: ${datosPago.detallePaisTarjeta}
+Pago seguro: <span class="textoDestacado">${datosPago.pagoSeguroTexto}</span>
 </li>
 <li>
-M&eacute;todo de pago: ${datosPago.detalleMetodoPago}
+Pa&iacute;s del m&eacute;todo de pago: <span class="textoDestacado">${datosPago.detallePaisTarjeta}</span>
+</li>
+<li>
+M&eacute;todo de pago: <span class="textoDestacado">${datosPago.detalleMetodoPago}</span>
 </li>
 <c:if test="${not datosPago.pagoBizum}">
 	<li>
-		Marca de la tarjeta: ${datosPago.detalleMarcaTarjeta}
+		Marca de la tarjeta: <span class="textoDestacado">${datosPago.detalleMarcaTarjeta}</span>
 	</li>
-	<li>
-		Tipo de tarjeta: ${datosPago.detalleTipoTarjeta}
-	</li>
-	<li>
-		Tarjeta obligada a PSD2: ${datosPago.tarjetaPSD2}
-	</li>		
 </c:if>
 <li>
 &nbsp;

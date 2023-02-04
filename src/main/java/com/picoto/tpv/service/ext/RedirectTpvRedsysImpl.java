@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.apache.commons.io.IOUtils;
 
+import com.picoto.tpv.dao.NRCDao;
 import com.picoto.tpv.dao.TokenDao;
 import com.picoto.tpv.dto.DatosPagoTpvIntf;
 import com.picoto.tpv.dto.DatosTarjeta;
@@ -119,8 +120,8 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 			apiMacSha256.setParameter("DS_MERCHANT_URLOK", DOMINIO_URL_RETORNO + URL_RETORNO_PAGO_OK);
 			apiMacSha256.setParameter("DS_MERCHANT_URLKO", DOMINIO_URL_RETORNO + URL_RETORNO_PAGO_KO);
 
-			String datosSeguridad = getDatoSeguridad();
-			apiMacSha256.setParameter("DS_MERCHANT_EMV3DS",datosSeguridad);
+			//String datosSeguridad = getDatoSeguridad();
+			apiMacSha256.setParameter("DS_MERCHANT_EMV3DS","");
 			
 			// Forzamos no uso de EMV3DS si el importe es bajo.
 			if (datosPago.noSuperaLimiteMaximo()) {
@@ -179,11 +180,15 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 						// Ver si esta es la forma adecuada
 						//capturarDetallesPago(detallespagoConfirmacion);
 						capturarDetallesPago(detallespago);
+						// validamos y consolidamos el NRC al confirmar el pago
+						validarNrc(detallespago.getNrc());
 					} else {
 						throw new TPVException("Error al confirmar la preautorizacion: "+detallespagoConfirmacion.getError());
 					}
 				} else {
 					capturarDetallesPago(detallespago);
+					// validamos y consolidamos el NRC al autorizar el pago					
+					validarNrc(detallespago.getNrc());
 				}
 				Utils.debug(detallespago.toString());
 				
@@ -202,6 +207,24 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		}
 
 		return detallespago;
+	}
+
+	private void validarNrc(String nrc) {
+		NRCDao dao = new NRCDao();
+		String nrcValidado = null;
+		
+		try {
+			nrcValidado = dao.getNRC(nrc);
+		} catch (Exception e) {
+			throw new TPVException("El NRC no consta en los sistemas de la AEAT. Operación rechazada");
+		}
+		boolean consolidado = dao.isConsolidado(nrc);
+		if (consolidado) {
+			throw new TPVException("El NRC ya consta como ingresado. Operacion denegada");
+		} else {
+			dao.consolidarNRC(nrcValidado);
+			Utils.debug("NRC consolidado");
+		}
 	}
 
 	private void capturarDatosBasicosPago(DetallesPagoIntf detallesPago) throws UnsupportedEncodingException {

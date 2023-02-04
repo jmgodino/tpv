@@ -36,6 +36,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	private BigDecimal importeIngresar;
 	private boolean pagoDirecto;
 	private String concepto;
+	private String nif;
 	private String titular;
 	private String direccionIp;
 	private String idioma;
@@ -59,7 +60,8 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 
 		concepto = String.format("PAGO DE IMPUESTOS. AUTOLIQUIDACION MODELO %s EJERCICIO %s PERIODO %s", modelo,
 				ejercicio, periodo);
-		titular = nif;
+		this.nif = nif;
+		this.titular = "89890001K-CERTIFICADO TELEMATICAS UNO (SEDE AEAT)";
 		this.idioma = idioma;
 		direccionIp = ip;
 		this.mediopago = mediopago;
@@ -73,7 +75,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 		}
 
 		String valorRnd = "" + (new Random().nextInt(10000000) + 100000000);
-		nrc = "1001234567890" + valorRnd;
+		nrc = modelo+"1234567890" + valorRnd;
 
 		// Ojo los calculos tras haber seteado todo bien
 		calcularImporteCentimosTpv(importe);
@@ -131,16 +133,20 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	public String recuperaToken() {
 		try {
 			TokenDao td = new TokenDao();
-			return td.getToken(titular);
+			return td.getToken(nif);
 		} catch (DAOException e) {
-			Utils.debug("No se ha encontrado el token para: " + titular);
+			Utils.debug("No se ha encontrado el token para: " + nif);
 			return null;
 		}
 	}
 
 	@Override
 	public String getTitular() {
-		return titular;
+		if (Utils.esVacio(titular)) { 
+			return "";
+		} else {
+			return (titular.length() < 60) ? titular : titular.substring(0,60);
+		}
 	}
 
 	public void setTitular(String titular) {
@@ -225,7 +231,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	@Override
 	public String toString() {
 		return "DatosPagoTpvRedsys [nrc=" + nrc + ", importeCentimos=" + importeCentimos + ", pagoDirecto="
-				+ pagoDirecto + ", concepto=" + concepto + ", titular=" + titular + ", direccionIp=" + direccionIp
+				+ pagoDirecto + ", concepto=" + concepto + ", nif=" + nif + ", titular=" + titular + ", direccionIp=" + direccionIp
 				+ ", idioma=" + idioma + ", operacion=" + operacion + ", mediopago=" + mediopago + ", pagoinseguro="
 				+ pagoinseguro + ", token=" + token + ", redireccion=" + redireccion + ", datosTarjeta=" + datosTarjeta
 				+ "]";

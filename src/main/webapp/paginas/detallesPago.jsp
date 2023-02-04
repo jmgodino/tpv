@@ -77,6 +77,7 @@ function toggle(nombre) {
 </script>
 </head>
 <body>
+<img src="/tpv/aeat.png" style="padding-left:45px;">
 <ul class="no-bullets">
 <li>
 	<h1>Va a realizar un pago con los siguientes datos mediante un TPV ajeno a esta Sede Electr&oacute;nica</h1>
@@ -85,13 +86,13 @@ function toggle(nombre) {
 		<li>Ejercicio: ${param.ejercicio}</li>
 		<li>Periodo: ${param.periodo}</li>
 		<li>NIF: ${param.nif}</li>
-		<li>Importe en comercio: <fmt:formatNumber type="number" pattern="0.00" value="${param.importe}"/>€</li>
+		<li>Importe de la Autoliquidación: <fmt:formatNumber type="number" pattern="0.00" value="${param.importe}"/>€</li>
 		<li>Importe a pagar en TPV: <fmt:formatNumber type="number" pattern="0.00" value="${datosPago.importeIngresar}"/>€</li>
 <li>
 &nbsp;
 </li>
 <li>
-	<input type="checkbox" id="condiciones" name="condiciones" onChange="aceptaCondiciones(this)"> Acepta las condiciones del servicio incluido el intercambio de datos con la entidad gestora del TPV además de un recargo del 0,31% en pago con tarjetas ajeno al comercio.
+	<input type="checkbox" id="condiciones" name="condiciones" onChange="aceptaCondiciones(this)"> Acepta las condiciones del servicio incluido el intercambio de datos con la entidad gestora del TPV además de un recargo del 0,31% en pago con tarjetas, totalmente ajeno a la AEAT.
 </li>
 <li>
 &nbsp;

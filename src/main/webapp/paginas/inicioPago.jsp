@@ -47,6 +47,7 @@ function cambioPagoRest() {
 </script>
 </head>
 <body>
+<img src="/tpv/aeat.png" style="padding-left:45px;">
 <ul class="no-bullets">
 <li>
 	<h1>Datos del pago</h1>
@@ -57,12 +58,12 @@ function cambioPagoRest() {
 		
 		<li><h2>Datos de la autoliquidación</h2></li>
 		
-		<li><label for="modelo">Modelo:</label><input type="text" name="modelo" value="100"/></li>
-		<li><label for="ejercicio">Ejercicio:</label><input type="text" name="ejercicio" value="2022"/></li>
-		<li><label for="periodo">Periodo:</label><input type="text" name="periodo" value="0A"/></li>
-		<li><label for="nif">NIF Ordenante:</label><input type="text" name="nif" value="89890001K"/></li>
+		<li><label for="modelo">Modelo:</label><input type="text" name="modelo" value="100" maxlength="3"/></li>
+		<li><label for="ejercicio">Ejercicio:</label><input type="text" name="ejercicio" value="2022" maxlength="4"/></li>
+		<li><label for="periodo">Periodo:</label><input type="text" name="periodo" value="0A"  maxlength="2"/></li>
+		<li><label for="nif">NIF Ordenante:</label><input type="text" name="nif" value="89890001K"  maxlength="9"/></li>
 		<li>
-		<label for="importe">Importe en euros:</label><input type="text" name="importe" value="10.00"/><span class="textoAyuda">Por debajo de 5€ admitimos operaciones sin necesidad de EMV 3DS</span>
+		<label for="importe">Importe en euros:</label><input type="text" name="importe" value="10.00"/><span class="textoAyuda">Por debajo de 5€ admitimos operaciones sin necesidad de EMV 3DS. No disponible en preautorización</span>
 		</li>
 
 		<li><h2>Opciones de idioma</h2></li>
@@ -75,7 +76,7 @@ function cambioPagoRest() {
 		<label for="mediopago">Medio de Pago:</label><select name="mediopago" onChange="cambioMedioPago(this)"><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_TARJETA%>">Tarjeta</option><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_BIZUM%>">Bizum</option></select>
 		</li>
 		<li id="listaOperacion">
-		<label for="operacion">Operacion:</label><select name="operacion"><option value="0">Autorizacion</option><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_PREAUTORIZACION%>">Preautorizacion</option></select><span class="textoAyuda">El uso de preautorizacion, implica una primera operación de autenticación de los datos de pago, y una segunda operación de confirmación por parte del comercio</span>
+		<label for="operacion">Operacion:</label><select name="operacion"><option value="0">Autorizacion</option><option value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_PREAUTORIZACION%>">Preautorizacion</option></select><span class="textoAyuda">El uso de preautorizacion, implica una primera operación de autenticación de los datos de pago, y una segunda operación de confirmación por parte de la AEAT</span>
 		</li>
 
 		<li id="listaPagoSeguro"><label for="pagoinseguro">Admitir Pago No Seguro:</label>
@@ -90,10 +91,10 @@ function cambioPagoRest() {
 		<span class="textoAyuda">Esta opción le permitirá realizar próximos pagos sin tener que introducir los datos de su tarjeta. Mayor comodidad</span>
 		</li>
 
-		<li id="listaPagoRest"><label for="pagorest">Realizar Pago desde el comercio</label>
+		<li id="listaPagoRest"><label for="pagorest">Realizar Pago desde la Sede AEAT</label>
 		<input type="radio" name="pagorest" value="S" onChange="cambioPagoRest()">Si</input>
 		<input type="radio" name="pagorest" value="N" onChange="cambioPagoRest()" checked>No</input>
-		<span class="textoAyuda">Esta opción le permitira pagar desde el comercio con datos de tarjeta sin tener que acceder a una web externa (y gestiones con PCI/DSS)</span>
+		<span class="textoAyuda">Esta opción le permitira pagar desde la AEAT con datos de tarjeta sin tener que acceder a una web externa (y gestiones con PCI/DSS)</span>
 		</li>
 
 		<li>

@@ -1,6 +1,7 @@
 package com.picoto.tpv.web;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.picoto.tpv.dao.NRCDao;
 import com.picoto.tpv.dto.ext.DatosPagoTpvRedsys;
 import com.picoto.tpv.exceptions.TPVException;
 import com.picoto.tpv.service.ext.RedirectTpvRedsysImpl;
@@ -53,6 +55,8 @@ public class TpvPrepareServlet extends HttpServlet {
 			}
 			
 			client.procesarPeticionTPV(dp);
+			NRCDao dao = new NRCDao();
+			dao.registrarNRC(nif, dp.getNrc(), new Date());
 			
 			JSONObject salida = new JSONObject();
 			salida.put("version", client.getVersion());
@@ -66,6 +70,7 @@ public class TpvPrepareServlet extends HttpServlet {
 			
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			JSONObject salida = new JSONObject();
 			salida.put("version", "");
 			salida.put("parametros", "");

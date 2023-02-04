@@ -7,7 +7,15 @@
 
 <html>
 <body>
+<img src="/tpv/aeat.png" style="padding-left:45px;">
 	<p>Error: ${datosPago.error}</p>
-	<p><fmt:message key="${datosPago.codigoError}" bundle="${msg}"/></p>
+	<%-- <p><fmt:message key="${datosPago.codigoError}" bundle="${msg}"/></p> --%>
+	
+<ul class="no-bullets">
+<li>
+	<a href="/tpv/TpvInicio">Realizar otro pago</a> 
+</li>
+</ul>
+	
 </body>
 </html>
