@@ -75,7 +75,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 		}
 
 		String valorRnd = "" + (new Random().nextInt(10000000) + 100000000);
-		nrc = modelo+"1234567890" + valorRnd;
+		nrc = modelo+ejercicio+"123456" + valorRnd;
 
 		// Ojo los calculos tras haber seteado todo bien
 		calcularImporteCentimosTpv(importe);

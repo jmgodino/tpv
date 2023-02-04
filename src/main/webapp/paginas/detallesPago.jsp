@@ -24,6 +24,11 @@ li {
 	font-style: italic;
 	font-size: 12px;
 }
+.textoDestacado {
+	color: blue;
+	font-style: bold;
+	font-size: 18px;
+}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
@@ -87,7 +92,7 @@ function toggle(nombre) {
 		<li>Periodo: ${param.periodo}</li>
 		<li>NIF: ${param.nif}</li>
 		<li>Importe de la Autoliquidación: <fmt:formatNumber type="number" pattern="0.00" value="${param.importe}"/>€</li>
-		<li>Importe a pagar en TPV: <fmt:formatNumber type="number" pattern="0.00" value="${datosPago.importeIngresar}"/>€</li>
+		<li>Importe a pagar en TPV: <span class="textoDestacado"><fmt:formatNumber type="number" pattern="0.00" value="${datosPago.importeIngresar}"/>€</span></li>
 <li>
 &nbsp;
 </li>
