@@ -185,7 +185,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 					}
 				} else {
 					capturarDetallesPago(detallespago);
-					// validamos y consolidamos el NRC al autorizar o confirmar el pago					
+					// validamos y consolidamos el NRC al autorizar (paso 1) o confirmar el pago (paso 2) para evitar que se haga 2 veces					
 					validarNrc(detallespago.getNrc());
 				}
 				Utils.debug(detallespago.toString());
@@ -221,7 +221,6 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 			throw new TPVException("El NRC ya consta como ingresado. Operacion denegada");
 		} else {
 			dao.consolidarNRC(nrcValidado);
-			Utils.debug("NRC consolidado");
 		}
 	}
 
@@ -264,10 +263,10 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		try {
 			String firmaCalculada = apiMacSha256.createMerchantSignatureNotif(CLAVE_COMERCIO, datos);
 			if (firmaCalculada.equals(firmaRespuesta)) {
-				Utils.debug("FIRMA OK. Realizar tareas en el servidor");
+				Utils.debug("FIRMA OK.");
 			} else {
 				Utils.debug(String.format("FIRMA KO. Error, firma inválida %s vs %s", firmaRespuesta, firmaCalculada));
-				throw new TPVException("La firma no seha podido validar. Operación descartada");
+				throw new TPVException("La firma no se ha podido validar. Operación descartada");
 			} 
 		} catch (Exception e) {
 			throw new TPVException("Error al validar la firma. "+e.getMessage());

@@ -81,7 +81,7 @@ public class NRCDao {
 			statement.setString(1, nrc);
 			int rows = statement.executeUpdate();
 			if (rows > 0) {
-				Utils.debug(String.format("Registro consolidado para NRC %s", nrc));
+				Utils.debug(String.format("***** Registro consolidado para NRC %s *****", nrc));
 			}
 			closeConnection(statement);
 		} catch (Exception e) {
@@ -126,7 +126,7 @@ public class NRCDao {
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				estado = rs.getInt(1);
-				Utils.debug(String.format("NRC encontrado: %s", nrc));
+				Utils.debug(String.format("NRC encontrado para consultar su estado: %s", nrc));
 			}
 			rs.close();
 			statement.close();
