@@ -137,8 +137,8 @@ public class TokenDao {
 		TokenDao t = new TokenDao();
 		t.destruir();
 		t.preparar();
-		t.registrarToken("89890001K","asdfasdfasdfsadfasdfasf", new Date());
-		t.getToken("89890001K");
-		t.getFecha("89890001K");
+		t.registrarToken("12345678Z","asdfasdfasdfsadfasdfasf", new Date());
+		t.getToken("12345678Z");
+		t.getFecha("12345678Z");
 	}
 }
