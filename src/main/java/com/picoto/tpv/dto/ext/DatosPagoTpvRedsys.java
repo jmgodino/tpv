@@ -61,7 +61,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 		concepto = String.format("PAGO DE IMPUESTOS. AUTOLIQUIDACION MODELO %s EJERCICIO %s PERIODO %s", modelo,
 				ejercicio, periodo);
 		this.nif = nif;
-		this.titular = "89890001K-CERTIFICADO TELEMATICAS UNO (SEDE AEAT)";
+		this.titular = "89890001K-JOSE MIGUEL GOD. MUN. (SEDE AEAT)";
 		this.idioma = idioma;
 		direccionIp = ip;
 		this.mediopago = mediopago;
