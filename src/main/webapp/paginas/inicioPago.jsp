@@ -102,7 +102,7 @@ function cambioPagoRest() {
 			<li><label for="pan">N. Tarjeta:</label><input type="text" name="pan" value="4548810000000003"/></li>
 			<li><label for="cad">F. Caducidad:</label><input type="text" name="cad" value="4912"/></li>
 			<li><label for="cvv">CVV2:</label><input type="text" name="cvv" value="123"/></li>
-			<li><span class="textoAyuda">ESTA OPCIÓN NO ES DESEABLE POR TENER QUE MANEJAR DATOS DE TARJETA (PCI/DSS)</span></li>
+			<li><span class="textoAyuda">ESTA OPCIÓN NO ES DESEABLE POR TENER QUE MANEJAR DATOS DE TARJETA. PROBLEMAS (PCI/DSS)</span></li>
 		</ul>
 		</li>
 
