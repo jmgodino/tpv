@@ -14,7 +14,7 @@
 </style>
 </head>
 <body>
-<img src="/tpv/aeat.png" style="padding-left:45px;">
+<img src="/tpv/images/aeat.png" style="padding-left:45px;">
 <ul class="no-bullets">
 <li>
 	<h1>Pagos Realizados con el TPV</h1>

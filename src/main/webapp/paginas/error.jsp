@@ -7,7 +7,7 @@
 
 <html>
 <body>
-<img src="/tpv/aeat.png" style="padding-left:45px;">
+<img src="/tpv/images/aeat.png" style="padding-left:45px;">
 	<p>Error: ${datosPago.error}</p>
 	<%-- <p><fmt:message key="${datosPago.codigoError}" bundle="${msg}"/></p> --%>
 	

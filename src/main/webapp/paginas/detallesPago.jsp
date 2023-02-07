@@ -82,7 +82,7 @@ function toggle(nombre) {
 </script>
 </head>
 <body>
-<img src="/tpv/aeat.png" style="padding-left:45px;">
+<img src="/tpv/images/aeat.png" style="padding-left:45px;">
 <ul class="no-bullets">
 <li>
 	<h1>Va a realizar un pago con los siguientes datos mediante un TPV ajeno a esta Sede Electr&oacute;nica</h1>
