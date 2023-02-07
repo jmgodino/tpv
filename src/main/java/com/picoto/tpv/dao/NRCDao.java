@@ -183,8 +183,8 @@ public class NRCDao {
 		NRCDao t = new NRCDao();
 		t.destruir();
 		t.preparar();
-		String nrc1 = "1001234567890123456789";
-		String nrc2 = "1001234567890123456788";
+		String nrc1 = "9991234567890123456789";
+		String nrc2 = "9991234567890123456788";
 		t.registrarNRC("12345678Z",nrc1, new BigDecimal("123.45"), new Date());
 		t.registrarNRC("12345678Z",nrc2, new BigDecimal("54.32"), new Date());
 		t.getNRC(nrc1);

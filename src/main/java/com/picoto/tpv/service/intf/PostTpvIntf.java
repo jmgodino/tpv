@@ -5,7 +5,7 @@ import com.picoto.tpv.exceptions.TPVException;
 
 public interface PostTpvIntf extends RedirectTpvIntf {
 
-	public DetallesPagoIntf post(DatosPagoTpvRedsys datosPago) throws TPVException;
+	public DetallesPagoIntf post(DatosPagoTpvRedsys datosPago, boolean generarNrc) throws TPVException;
 	
 	public void open();
 	

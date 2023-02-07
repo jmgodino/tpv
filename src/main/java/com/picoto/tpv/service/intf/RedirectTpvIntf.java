@@ -6,7 +6,7 @@ import com.picoto.tpv.exceptions.TPVException;
 
 public interface RedirectTpvIntf {
 
-	public void procesarPeticionTPV(DatosPagoTpvIntf datosPago) throws TPVException;
+	public void procesarPeticionTPV(DatosPagoTpvIntf datosPago, boolean generarNrc) throws TPVException;
 	public DetallesPagoIntf procesarRespuestaTPV(String datos, String firma) throws TPVException;
 
 }

@@ -49,13 +49,13 @@ public class PostTpvRedsysImpl extends RedirectTpvRedsysImpl implements PostTpvI
 	}
 	
 	@Override
-	public DetallesPagoIntf post(DatosPagoTpvRedsys datosPago) throws TPVException {
+	public DetallesPagoIntf post(DatosPagoTpvRedsys datosPago, boolean generarNrc) throws TPVException {
 
 		HttpPost postRequest = new HttpPost(URL_PAGO);
 
 		try {
 
-			procesarPeticionTPV(datosPago);
+			procesarPeticionTPV(datosPago, generarNrc);
 
 			String respuesta = doPost(postRequest, payload, signature);
 

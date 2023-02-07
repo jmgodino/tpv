@@ -48,7 +48,7 @@ public interface DetallesPagoIntf {
 
 	public String getCodigoError();
 
-	public boolean necesitaConfirmacion();
+	public boolean isNecesitaConfirmacion();
 	
 	public boolean isConfirmacionCorrecta();
 

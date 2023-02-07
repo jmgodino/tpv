@@ -159,7 +159,7 @@ public class DetallesPagoRedsys implements DetallesPagoIntf {
 	}
 
 	@Override
-	public boolean necesitaConfirmacion() {
+	public boolean isNecesitaConfirmacion() {
 		return !Utils.esVacio(detalles) && detalles.indexOf(TEXTO_CONFIRMAR_PREAUTORIZACION) >= 0;
 	}
 

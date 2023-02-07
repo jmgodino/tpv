@@ -23,6 +23,12 @@ label {
 	font-size: 12px;
 }
 
+.textoAyuda2 {
+	color: blue;
+	font-style: bold;
+	font-size: 12px;
+}
+
 .liModoTabla {
 	display: table;
 }
@@ -140,7 +146,7 @@ label {
 								name="cad" value="4912" /></li>
 							<li><label for="cvv">CVV2:</label><input type="text"
 								name="cvv" value="123" /></li>
-							<li><span class="textoAyuda">ESTA OPCIÓN NO ES
+							<li><span class="textoAyuda2">ESTA OPCIÓN NO ES
 									DESEABLE POR TENER QUE MANEJAR DATOS DE TARJETA. PROBLEMAS
 									(PCI/DSS)</span></li>
 						</ul>

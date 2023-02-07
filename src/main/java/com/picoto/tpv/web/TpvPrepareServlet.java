@@ -54,7 +54,7 @@ public class TpvPrepareServlet extends HttpServlet {
 				throw new TPVException("Error de seguridad. Datos modificados");
 			}
 			
-			client.procesarPeticionTPV(dp);
+			client.procesarPeticionTPV(dp, true);
 			
 			JSONObject salida = new JSONObject();
 			salida.put("version", client.getVersion());

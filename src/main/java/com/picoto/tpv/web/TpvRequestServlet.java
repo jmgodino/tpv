@@ -59,7 +59,7 @@ public class TpvRequestServlet extends HttpServlet {
 				dp.setDatosTarjeta(new DatosTarjeta(pan, caducidad, cvv));
 				
 				client.open();
-				DetallesPagoIntf detallesPago = client.post(dp);
+				DetallesPagoIntf detallesPago = client.post(dp, true);
 				client.close();
 				req.setAttribute("datosPago", detallesPago);
 				if (detallesPago.getError() == null) {

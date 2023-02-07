@@ -61,7 +61,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 	}
 
 	@Override
-	public void procesarPeticionTPV(DatosPagoTpvIntf datosPago) throws TPVException {		
+	public void procesarPeticionTPV(DatosPagoTpvIntf datosPago, boolean generarNrc) throws TPVException {
 
 		try {
 			Utils.debug(datosPago.toString());
@@ -70,10 +70,12 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 			Utils.debug("Peticion:" + apiMacSha256.decodeMerchantParameters(payload));
 			signature = apiMacSha256.createMerchantSignature(CLAVE_COMERCIO);
 			NRCDao dao = new NRCDao();
-			dao.registrarNRC(datosPago.getNif(), datosPago.getNrc(), datosPago.getImporteNrc(), new Date());
-
+			// No se puede registrar e el POST de confirmación, porque ya existe
+			if (generarNrc) {
+				dao.registrarNRC(datosPago.getNif(), datosPago.getNrc(), datosPago.getImporteNrc(), new Date());
+			}
 		} catch (Exception e) {
-			throw new TPVException("Error procensado peticion de pago: "+e.getMessage());
+			throw new TPVException("Error procensado peticion de pago: " + e.getMessage());
 		}
 	}
 
@@ -90,7 +92,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		// Ojo, esto es lo contrario al EMV3DS. Pago sin autenticación adicional, solo
 		// con datos de tarjeta
 		if (datosPago.isPagoInseguro()) {
-			//apiMacSha256.setParameter("DS_MERCHANT_DIRECTPAYMENT", "true");
+			// apiMacSha256.setParameter("DS_MERCHANT_DIRECTPAYMENT", "true");
 			apiMacSha256.setParameter("DS_MERCHANT_EXCEP_SCA", "COR");
 		}
 
@@ -123,9 +125,9 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 			apiMacSha256.setParameter("DS_MERCHANT_URLOK", DOMINIO_URL_RETORNO + URL_RETORNO_PAGO_OK);
 			apiMacSha256.setParameter("DS_MERCHANT_URLKO", DOMINIO_URL_RETORNO + URL_RETORNO_PAGO_KO);
 
-			//String datosSeguridad = getDatoSeguridad();
-			apiMacSha256.setParameter("DS_MERCHANT_EMV3DS","");
-			
+			// String datosSeguridad = getDatoSeguridad();
+			apiMacSha256.setParameter("DS_MERCHANT_EMV3DS", "");
+
 			// Forzamos no uso de EMV3DS si el importe es bajo.
 			if (datosPago.noSuperaLimiteMaximo()) {
 				apiMacSha256.setParameter("DS_MERCHANT_EXCEP_SCA", "LWV");
@@ -135,10 +137,12 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		apiMacSha256.setParameter("DS_MERCHANT_CLIENTIP", datosPago.getDireccionIp());
 		apiMacSha256.setParameter("DS_MERCHANT_CONSUMERLANGUAGE", datosPago.getIdioma());
 		apiMacSha256.setParameter("DS_MERCHANT_MERCHANTDATA",
-				(datosPago.isPreautorizacion() ? DetallesPagoRedsys.TEXTO_CONFIRMAR_PREAUTORIZACION : DetallesPagoRedsys.TEXTO_AUTORIZADO_PREAUTORIZACION) + datosPago.getTitular());
+				(datosPago.isPreautorizacion() ? DetallesPagoRedsys.TEXTO_CONFIRMAR_PREAUTORIZACION
+						: DetallesPagoRedsys.TEXTO_AUTORIZADO_PREAUTORIZACION) + datosPago.getTitular());
 		apiMacSha256.setParameter("DS_MERCHANT_MERCHANTNAME", COMERCIO_NOMBRE);
-		
-		// Solo para el caso de peticion REST de pago, que no vamos a usar casi con total seguridad
+
+		// Solo para el caso de peticion REST de pago, que no vamos a usar casi con
+		// total seguridad
 		DatosTarjeta datosTarjeta = datosPago.getDatosTarjeta();
 		if (datosTarjeta != null) {
 			apiMacSha256.setParameter("DS_MERCHANT_DIRECTPAYMENT", "true");
@@ -152,7 +156,8 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 	private String getDatoSeguridad() throws TPVException {
 		try {
-			return String.format(IOUtils.resourceToString("/emv3ds.txt",StandardCharsets.UTF_8),724,"MA","MA","Calle Encanto","5 Portal 1","28100", "Jose Miguel GM","test@gmail.com",034,666666666);
+			return String.format(IOUtils.resourceToString("/emv3ds.txt", StandardCharsets.UTF_8), 724, "MA", "MA",
+					"Calle Encanto", "5 Portal 1", "28100", "Jose Miguel GM", "test@gmail.com", 034, 666666666);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new TPVException("Error al recuperar datos de seguridad EMV3DS");
@@ -175,26 +180,29 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 
 				Utils.debug("Codigo respuesta afirmativo");
 				capturarDatosBasicosPago(detallespago);
-				
-				if (detallespago.necesitaConfirmacion()) {
+
+				if (detallespago.isNecesitaConfirmacion()) {
 					Utils.debug("**************** Confirmando operacion de preautorizacion ****************");
-					detallespagoConfirmacion = confirmarOperacion(detallespago.getImporteTpv(), detallespago.getNrc(), detallespago.getNif());
+					detallespagoConfirmacion = confirmarOperacion(detallespago.getImporteTpv(), detallespago.getNrc(),
+							detallespago.getNif());
 					if (detallespagoConfirmacion.isConfirmacionCorrecta()) {
 						// Ver si esta es la forma adecuada
-						//capturarDetallesPago(detallespagoConfirmacion);
+						// capturarDetallesPago(detallespagoConfirmacion);
 						capturarDetallesPago(detallespago);
 					} else {
-						throw new TPVException("Error al confirmar la preautorizacion: "+detallespagoConfirmacion.getError());
+						throw new TPVException(
+								"Error al confirmar la preautorizacion: " + detallespagoConfirmacion.getError());
 					}
 				} else {
 					capturarDetallesPago(detallespago);
-					// validamos y consolidamos el NRC al autorizar (paso 1) o confirmar el pago (paso 2) para evitar que se haga 2 veces					
+					// validamos y consolidamos el NRC al autorizar (paso 1) o confirmar el pago
+					// (paso 2) para evitar que se haga 2 veces
 					validarNrc(detallespago.getNrc());
 				}
 				Utils.debug(detallespago.toString());
-				
+
 				gestionarPagoDirectoRespuesta(detallespago);
-				
+
 			} else {
 				String codResp = getCodigoRespuesta();
 				detallespago.setError("Error en la operación. " + codResp);
@@ -213,7 +221,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 	private void validarNrc(String nrc) {
 		NRCDao dao = new NRCDao();
 		String nrcValidado = null;
-		
+
 		try {
 			nrcValidado = dao.getNRC(nrc);
 		} catch (Exception e) {
@@ -235,7 +243,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		detallesPago.setNrc(nrc);
 		detallesPago.setImporteTpv(importeTpv);
 		detallesPago.setDetalles(detalles);
-		
+
 	}
 
 	private void capturarDetallesPago(DetallesPagoIntf detallesPago) {
@@ -251,7 +259,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		} else {
 			detallesPago.setPaisTarjeta(getCampo("Ds_Card_Country"));
 			detallesPago.setMarcaTarjeta(getCampo("Ds_Card_Brand"));
-			
+
 			detallesPago.setTipoTarjeta(getCampo("Ds_Card_Type"));
 			detallesPago.setTarjetaPSD2(getCampo("Ds_Card_Psd2"));
 		}
@@ -270,9 +278,9 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 			} else {
 				Utils.debug(String.format("FIRMA KO. Error, firma inválida %s vs %s", firmaRespuesta, firmaCalculada));
 				throw new TPVException("La firma no se ha podido validar. Operación descartada");
-			} 
+			}
 		} catch (Exception e) {
-			throw new TPVException("Error al validar la firma. "+e.getMessage());
+			throw new TPVException("Error al validar la firma. " + e.getMessage());
 		}
 	}
 
@@ -334,7 +342,7 @@ public class RedirectTpvRedsysImpl implements RedirectTpvIntf {
 		datosPago.setRedireccion(false);
 
 		client.open();
-		DetallesPagoIntf detallesPago = client.post(datosPago);
+		DetallesPagoIntf detallesPago = client.post(datosPago, false);
 		client.close();
 
 		return detallesPago;
