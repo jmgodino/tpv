@@ -26,7 +26,7 @@
 					<li><label for="nif">NIF Ordenante:</label><input type="text"
 						name="nif" value="89890001K" maxlength="9" /></li>
 					<li><label for="importe">Importe en euros:</label><input
-						type="text" name="importe" value="10.00" /><span
+						type="text" name="importe" value="<%=com.picoto.tpv.util.Utils.getImporteAleatorio()%>" /><span
 						class="textoAyuda">Por debajo de 5€ admitimos operaciones
 							sin necesidad de EMV 3DS. No disponible en preautorización</span></li>
 
