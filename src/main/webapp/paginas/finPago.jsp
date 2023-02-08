@@ -7,32 +7,8 @@
 
 <html>
 <head>
-<style>
-.no-bullets {
-	list-style-type: none;
-}
-
-.textoDestacado {
-	color: blue;
-	font-style: bold;
-	font-size: 18px;
-}
-
-.textoPanel {
-	width: 100%;
-	height: 100vh;
-	display: block;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	background-color: white;
-	text-align: center;
-	background-image: url('/tpv/images/loading.gif');
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: center;
-}
-</style>
+<script src="/tpv/js/tpv.js"></script>
+<link rel="stylesheet" href="/tpv/css/tpv.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
@@ -69,9 +45,8 @@
 	<c:if test="${datosPago.necesitaConfirmacion}">
 		<div id="confirmando" class="textoPanel">
 			<h1>Confirmando pago desde la AEAT con TPV antes de consolidar
-				el NRC
-				</h1>
-				(Solo a título instructivo)
+				el NRC</h1>
+			(Solo a título instructivo)
 		</div>
 		<script>
 			setTimeout(function() {

@@ -7,11 +7,8 @@
 
 <html>
 <head>
-<style>
-.no-bullets {
-    list-style-type: none;
-}
-</style>
+<script src="/tpv/js/tpv.js"></script>
+<link rel="stylesheet" href="/tpv/css/tpv.css">
 </head>
 <body>
 <img src="/tpv/images/aeat.png" style="padding-left:45px;">

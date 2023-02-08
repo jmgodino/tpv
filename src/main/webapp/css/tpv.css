@@ -1,0 +1,67 @@
+.no-bullets {
+    list-style-type: none;
+}
+
+.textoPanel {
+	width: 100%;
+	height: 100vh;
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	background-color: white;
+	text-align: center;
+	background-image: url('/tpv/images/loading.gif');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+}
+
+li {
+	margin-bottom: 5px;
+}
+
+.rojo {
+	color: red;
+	font-size: 10px;
+}
+
+.textoTarjetas {
+	color: red;
+	font-style: italic;
+	font-size: 12px;
+}
+
+.textoDestacado {
+	color: blue;
+	font-style: bold;
+	font-size: 18px;
+}
+
+label {
+	width: 200px;
+	display: inline-block
+}
+
+.textoAyuda {
+	padding-left: 20px;
+	color: blue;
+	font-style: italic;
+	font-size: 12px;
+}
+
+.textoAyuda2 {
+	color: blue;
+	font-style: bold;
+	font-size: 12px;
+}
+
+.liModoTabla {
+	display: table;
+}
+
+.modoTabla {
+	vertical-align: middle;
+	display: table-cell;
+}
+

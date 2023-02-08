@@ -5,81 +5,9 @@
 
 <html>
 <head>
-<style>
-.no-bullets {
-    list-style-type: none;
-}
-
-li {
-	margin-bottom: 5px;
-}
-
-.rojo {
-	color: red;
-	font-size: 10px;
-}
-
-.textoTarjetas {
-	color: red;
-	font-style: italic;
-	font-size: 12px;
-}
-.textoDestacado {
-	color: blue;
-	font-style: bold;
-	font-size: 18px;
-}
-</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script>
-
-function aceptaCondiciones(checkBoxField) {
-  if (checkBoxField.checked) {
-  	checkBoxField.disabled = true;
-  	if (esVacio("#versionTpv") || esVacio("#parametrosTpv") || esVacio("#firmaTpv")) { 
-  		cargarDatosPagoTpv();
-  	}
-  }
-}
-
-function esVacio() {
-	return !$("#versionTpv").val();
-}
-
-function cargarDatosPagoTpv() {
-	var info = { "modelo":"${param.modelo}", "ejercicio":"${param.ejercicio}", "periodo":"${param.periodo}", "nif":"${param.nif}", "importe":"${param.importe}", "idioma":"${param.idioma}", "mediopago":"${param.mediopago}", "pagoinseguro":"${param.pagoinseguro}", "pagodirecto":"${param.pagodirecto}", "operacion":"${param.operacion}", "hash":"${datosPago.hash}" };
-
-        $.ajax({
-            type: 'post',
-            url: '/tpv/TpvDetalle',
-            data: JSON.stringify(info),
-            contentType: "application/json; charset=utf-8",
-            traditional: true,
-            dataType: "json",
-            success: function (data) {
-             	$("#versionTpv").val(data.version);
-             	$("#parametrosTpv").val(data.parametros);
-             	$("#firmaTpv").val(data.firma);
-           	  	toggle("formularioPago");
-            },
-			statusCode: {
-        		500: function() {
-          			alert( 'Error al preparar llamada al TPV' );
-        		}
-			}
-        });
-}
-
-
-function toggle(nombre) {
-	var lista = document.getElementById(nombre);
-	if (!lista.style.visibility || lista.style.visibility == 'visible') {
-		lista.style.visibility = 'hidden';
-	} else {
-		lista.style.visibility = 'visible';
-	}	
-}
-</script>
+<script src="/tpv/js/tpv.js"></script>
+<link rel="stylesheet" href="/tpv/css/tpv.css">
 </head>
 <body>
 <img src="/tpv/images/aeat.png" style="padding-left:45px;">

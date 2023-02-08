@@ -2,63 +2,8 @@
 
 <html>
 <head>
-<style>
-.no-bullets {
-	list-style-type: none;
-}
-
-li {
-	margin-bottom: 5px;
-}
-
-label {
-	width: 200px;
-	display: inline-block
-}
-
-.textoAyuda {
-	padding-left: 20px;
-	color: blue;
-	font-style: italic;
-	font-size: 12px;
-}
-
-.textoAyuda2 {
-	color: blue;
-	font-style: bold;
-	font-size: 12px;
-}
-
-.liModoTabla {
-	display: table;
-}
-
-.modoTabla {
-	vertical-align: middle;
-	display: table-cell;
-}
-</style>
-<script>
-	function cambioMedioPago(medioPago) {
-		//toogleList("listaOperacion");
-		toogleList("listaPagoSeguro");
-		toogleList("listaPagoDirecto");
-		toogleList("listaPagoRest");
-	}
-
-	function toogleList(nombre) {
-		var lista = document.getElementById(nombre);
-		if (!lista.style.visibility || lista.style.visibility == 'visible') {
-			lista.style.visibility = 'hidden';
-		} else {
-			lista.style.visibility = 'visible';
-		}
-	}
-
-	function cambioPagoRest() {
-		toogleList("datosTarjeta");
-	}
-</script>
+<script src="/tpv/js/tpv.js"></script>
+<link rel="stylesheet" href="/tpv/css/tpv.css">
 </head>
 <body>
 	<img src="/tpv/images/aeat.png" style="padding-left: 45px;">

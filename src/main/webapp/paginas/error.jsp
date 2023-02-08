@@ -6,6 +6,10 @@
 <fmt:setBundle basename="erroresTpv" var="msg"/>
 
 <html>
+<head>
+<script src="/tpv/js/tpv.js"></script>
+<link rel="stylesheet" href="/tpv/css/tpv.css">
+</head>
 <body>
 <img src="/tpv/images/aeat.png" style="padding-left:45px;">
 	<p>Error: ${datosPago.error}</p>
