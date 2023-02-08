@@ -12,7 +12,6 @@ function esVacio() {
 }
 
 function cargarDatosPagoTpv() {
-	var info = { "modelo": "${param.modelo}", "ejercicio": "${param.ejercicio}", "periodo": "${param.periodo}", "nif": "${param.nif}", "importe": "${param.importe}", "idioma": "${param.idioma}", "mediopago": "${param.mediopago}", "pagoinseguro": "${param.pagoinseguro}", "pagodirecto": "${param.pagodirecto}", "operacion": "${param.operacion}", "hash": "${datosPago.hash}" };
 
 	$.ajax({
 		type: 'post',

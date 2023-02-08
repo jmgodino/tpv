@@ -5,6 +5,9 @@
 
 <html>
 <head>
+<script>
+var info = { "modelo": "${param.modelo}", "ejercicio": "${param.ejercicio}", "periodo": "${param.periodo}", "nif": "${param.nif}", "importe": "${param.importe}", "idioma": "${param.idioma}", "mediopago": "${param.mediopago}", "pagoinseguro": "${param.pagoinseguro}", "pagodirecto": "${param.pagodirecto}", "operacion": "${param.operacion}", "hash": "${datosPago.hash}" };
+</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="/tpv/js/tpv.js"></script>
 <link rel="stylesheet" href="/tpv/css/tpv.css">
