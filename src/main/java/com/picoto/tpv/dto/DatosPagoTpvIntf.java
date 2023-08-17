@@ -32,7 +32,7 @@ public interface DatosPagoTpvIntf {
 
 	public boolean isPagoTarjeta();
 	
-	public boolean isPreautorizacion();
+	public boolean isAutenticacion();
 	
 	public String getToken();
 	

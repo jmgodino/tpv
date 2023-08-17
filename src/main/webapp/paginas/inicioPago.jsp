@@ -28,7 +28,7 @@
 					<li><label for="importe">Importe en euros:</label><input
 						type="text" name="importe" value="<%=com.picoto.tpv.util.Utils.getImporteAleatorio()%>" /><span
 						class="textoAyuda">Por debajo de 5€ admitimos operaciones
-							sin necesidad de EMV 3DS. No disponible en preautorización</span></li>
+							sin necesidad de EMV 3DS. No disponible en autenticación. Las operaciones de 0,01€ se anulan automáticamente</span></li>
 
 					<li><h2>Opciones de idioma</h2></li>
 
@@ -50,12 +50,12 @@
 						value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_BIZUM%>">
 						<img src="/tpv/images/bizum.png" alt="Bizum" class="modoTabla"
 						width="150px" height="40px"> </label> </label> <span class="textoAyuda">El
-							pago con tarjeta tiene comisión. El pago por Bizum no</span></li>
+							pago con tarjeta tiene comisión. El pago por Bizum no tiene comisión</span></li>
 					<li id="listaOperacion"><label for="operacion">Operacion:</label><select
 						name="operacion"><option value="0">Autorizacion</option>
 							<option
-								value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_PREAUTORIZACION%>">Preautorizacion</option></select><span
-						class="textoAyuda">El uso de preautorizacion, implica una
+								value="<%=com.picoto.tpv.dto.ext.DatosPagoTpvRedsys.OPERACION_PREAUTORIZACION%>">Autenticación</option></select><span
+						class="textoAyuda">El uso de autenticación, implica una
 							primera operación de autenticación de los datos de pago, y una
 							segunda operación de confirmación por parte de la AEAT</span></li>
 

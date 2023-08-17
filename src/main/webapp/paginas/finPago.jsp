@@ -46,7 +46,7 @@
 		<div id="confirmando" class="textoPanel">
 			<h1>Confirmando pago desde la AEAT con TPV antes de consolidar
 				el NRC</h1>
-			(Solo a título instructivo)
+			(Solo a título instructivo, en realidad esta operación es casi inmediata)
 		</div>
 		<script>
 			setTimeout(function() {

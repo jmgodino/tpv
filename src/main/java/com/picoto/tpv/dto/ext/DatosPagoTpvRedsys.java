@@ -15,11 +15,13 @@ import com.picoto.tpv.util.Utils;
 
 public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 
-	private static final String TASA_DESCUENTO = "0.0031";
+	private static final String TASA_DESCUENTO = "0.00";
 
 	public static final String OPERACION_AUTORIZACION = "0";
 	public static final String OPERACION_PREAUTORIZACION = "7";
 	public static final String OPERACION_CONFIRMACION = "8";
+	public static final String OPERACION_ANULACION = "45";
+	public static final String OPERACION_ANULACION_AUTENTICACION = "47";
 
 	public static final String OPERACION_TARJETA = "C";
 	public static final String OPERACION_BIZUM = "z";
@@ -198,7 +200,7 @@ public class DatosPagoTpvRedsys implements DatosPagoTpvIntf {
 	}
 
 	@Override
-	public boolean isPreautorizacion() {
+	public boolean isAutenticacion() {
 		return OPERACION_PREAUTORIZACION.equals(operacion);
 	}
 
